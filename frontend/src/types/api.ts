@@ -48,6 +48,24 @@ export interface LogoutResponse {
   status: "ok";
 }
 
+/** GET /accounts/me/ → 200 (authenticated) */
+export interface CurrentUser {
+  id: number;
+  username: string;
+  /** May be an empty string. */
+  first_name: string;
+  last_name: string;
+  /** null if the account has no linked Telegram identity. */
+  telegram_id: number | null;
+  /** Without the leading "@"; may be an empty string. */
+  telegram_username: string;
+}
+
+/** GET /accounts/me/ → 401 (no session) */
+export interface NotAuthenticatedResponse {
+  detail: "not_authenticated";
+}
+
 /** Loose shape of any JSON error body the API may return (DRF + our views). */
 export interface ApiErrorBody {
   status?: string;

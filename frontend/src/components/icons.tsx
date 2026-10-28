@@ -113,3 +113,23 @@ export function LockIcon(props: IconProps) {
     </Svg>
   );
 }
+
+export function BookIcon(props: IconProps) {
+  return (
+    <Svg {...props}>
+      <path d="M4.75 5.75c0-.97.78-1.75 1.75-1.75h11.75v13H6.5c-.97 0-1.75.78-1.75 1.75" />
+      <path d="M4.75 18.75V5.75" />
+      <path d="M4.75 18.75c0 .97.78 1.75 1.75 1.75h11.75V17" />
+      <path d="M8.75 8.25h5.5" />
+    </Svg>
+  );
+}
+
+export function PencilIcon(props: IconProps) {
+  return (
+    <Svg {...props}>
+      <path d="M14.5 5.5l4 4" />
+      <path d="M16.25 3.75a2.12 2.12 0 0 1 3 3L8.5 17.5l-4 1 1-4Z" />
+    </Svg>
+  );
+}

@@ -50,7 +50,10 @@ test.describe("method 1 — deep link / token", () => {
     await expect(page.getByTestId("signed-in")).toBeVisible({ timeout: 10_000 });
     await expect(liveRegion(page)).toContainText("Muvaffaqiyatli kirdingiz");
     await expect(page).toHaveURL(/\/$/);
-    await expect(page.getByRole("heading", { name: "Siz tizimga kirdingiz" })).toBeVisible();
+    // The real home page now loads /me and greets the freshly signed-in user.
+    await expect(
+      page.getByRole("heading", { level: 1, name: "Xush kelibsiz, Diyorbek!" }),
+    ).toBeVisible();
     expect(calls.status.every((t) => t === tokenFor(0))).toBe(true);
   });
 
@@ -264,7 +267,9 @@ test.describe("method 2 — 5-digit code", () => {
 
     await expect(page.getByTestId("signed-in")).toBeVisible();
     await expect(page).toHaveURL(/\/$/);
-    await expect(page.getByRole("heading", { name: "Siz tizimga kirdingiz" })).toBeVisible();
+    await expect(
+      page.getByRole("heading", { level: 1, name: "Xush kelibsiz, Diyorbek!" }),
+    ).toBeVisible();
     expect(calls.verify[0]).toMatchObject({ code: "54321", csrfHeader: CSRF_TOKEN });
   });
 });
@@ -331,12 +336,4 @@ test.describe("responsive layout", () => {
       expect(box?.height ?? 0).toBeGreaterThanOrEqual(44);
     }
   });
-});
-
-test("unknown routes and an unauthenticated / land on /login", async ({ page }) => {
-  await mockAuthApi(page);
-  await page.goto("/");
-  await expect(page).toHaveURL(/\/login$/);
-  await page.goto("/does-not-exist");
-  await expect(page).toHaveURL(/\/login$/);
 });

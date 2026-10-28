@@ -116,7 +116,8 @@ test.describe.serial("real backend", () => {
 
     await expect(page.getByTestId("signed-in")).toBeVisible({ timeout: 10_000 });
     await expect(page).toHaveURL(/localhost:3000\/$/);
-    await expect(page.getByRole("heading", { name: "Siz tizimga kirdingiz" })).toBeVisible();
+    // Home renders the signed-in view from the real GET /api/accounts/me/.
+    await expect(page.getByRole("heading", { level: 1, name: "Xush kelibsiz, E2E!" })).toBeVisible();
     await expectSessionCookie(page);
   });
 
@@ -174,5 +175,42 @@ test.describe.serial("real backend", () => {
     await submit.click();
     await expect(page).toHaveURL(/localhost:3000\/$/, { timeout: 10_000 });
     await expectSessionCookie(page);
+    await expect(page.getByRole("heading", { level: 1, name: "Xush kelibsiz, E2E!" })).toBeVisible();
+    await expect(page.getByTestId("courses-empty")).toBeVisible();
+  });
+
+  test("home: a fresh visit reads the session from /me; guests get the landing", async ({ page }) => {
+    await page.goto("/");
+    await expect(page.getByTestId("home-guest")).toBeVisible();
+    await expect(page.getByRole("banner").getByRole("link", { name: "Kirish" })).toBeVisible();
+
+    const code = bot.createCode(tgId(5));
+    const signIn = await page.request.post("http://localhost:8000/api/accounts/telegram/code/verify/", {
+      data: { code },
+    });
+    expect(signIn.status()).toBe(200);
+
+    await page.reload();
+    await expect(page.getByRole("heading", { level: 1, name: "Xush kelibsiz, E2E!" })).toBeVisible();
+    await expect(page.getByTestId("header-greeting")).toContainText("E2E");
+  });
+
+  test("home: Chiqish logs out against the real backend", async ({ page }) => {
+    // Known backend issue: CSRF_TRUSTED_ORIGINS is not configured, so Django
+    // rejects the cross-origin POST /logout/ with 403 "Origin checking failed
+    // - http://localhost:3000 does not match any trusted origins." The UI
+    // correctly keeps the user signed in and shows "Tizimdan chiqib bo‘lmadi".
+    // Remove test.fail() once the backend trusts the frontend origin.
+    test.fail(true, "backend: CSRF_TRUSTED_ORIGINS missing http://localhost:3000");
+
+    const code = bot.createCode(tgId(6));
+    await page.request.post("http://localhost:8000/api/accounts/telegram/code/verify/", {
+      data: { code },
+    });
+    await page.goto("/");
+    await expect(page.getByTestId("home-member")).toBeVisible();
+
+    await page.getByRole("banner").getByRole("button", { name: "Chiqish" }).click();
+    await expect(page.getByTestId("home-guest")).toBeVisible({ timeout: 5_000 });
   });
 });

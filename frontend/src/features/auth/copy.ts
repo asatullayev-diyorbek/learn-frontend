@@ -72,3 +72,15 @@ export const CODE_ERROR_COPY: Record<CodeErrorKind, string> = {
   rate_limited: "Juda ko‘p urinish. Bir daqiqadan so‘ng qayta urinib ko‘ring.",
   server: "Kodni tekshirib bo‘lmadi. Birozdan so‘ng qayta urinib ko‘ring.",
 };
+
+/** Header account slot + sign-out (site layout). */
+export const ACCOUNT_COPY = {
+  signIn: "Kirish",
+  signOut: "Chiqish",
+  signingOut: "Chiqilmoqda…",
+  greeting: "Salom,",
+  loading: "Hisob ma’lumotlari yuklanmoqda…",
+  signedOut: "Tizimdan chiqdingiz.",
+  signOutFailedTitle: "Tizimdan chiqib bo‘lmadi",
+  signOutFailedDescription: "Internet aloqangizni tekshiring va qayta urinib ko‘ring.",
+} as const;

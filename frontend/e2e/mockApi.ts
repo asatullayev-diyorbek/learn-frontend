@@ -8,6 +8,25 @@ import type { Page, Request } from "@playwright/test";
 export const CSRF_TOKEN = "e2e-csrf-token-value";
 export const BOT_URL = "https://t.me/learn_test_bot";
 
+/** Same shape as GET /api/accounts/me/ → 200. */
+export interface MockUser {
+  id: number;
+  username: string;
+  first_name: string;
+  last_name: string;
+  telegram_id: number | null;
+  telegram_username: string;
+}
+
+export const E2E_USER: MockUser = {
+  id: 1,
+  username: "tg_777000222",
+  first_name: "Diyorbek",
+  last_name: "A",
+  telegram_id: 777000222,
+  telegram_username: "diyor",
+};
+
 export type TokenStatus = "pending" | "confirmed" | "expired";
 export type VerifyResult = { status: 200 } | { status: 400; failure: "invalid" | "expired" | "used" };
 
@@ -18,6 +37,18 @@ export interface MockOptions {
   /** "network" aborts the request; a number answers with that HTTP status. */
   tokenFailure?: (call: number) => "network" | number | null;
   tokenDelayMs?: number;
+  /**
+   * Who the mocked session belongs to when the page loads (default: nobody).
+   * A successful login (confirmed token or verified code) signs in as
+   * `signInAs` (default E2E_USER); logout clears the session again.
+   */
+  user?: MockUser | null;
+  signInAs?: MockUser;
+  /** "network" aborts GET /me; a number answers with that HTTP status. */
+  meFailure?: (call: number) => "network" | number | null;
+  meDelayMs?: number;
+  /** "network" aborts POST /logout; a number answers with that HTTP status. */
+  logoutFailure?: (call: number) => "network" | number | null;
 }
 
 export interface ApiCalls {
@@ -26,6 +57,8 @@ export interface ApiCalls {
   token: string[];
   status: string[];
   verify: { code: string; csrfHeader: string | null; contentType: string | null }[];
+  me: number;
+  logout: { csrfHeader: string | null }[];
 }
 
 const VERIFY_DETAIL = {
@@ -39,7 +72,11 @@ export function tokenFor(call: number) {
 }
 
 export async function mockAuthApi(page: Page, options: MockOptions = {}): Promise<ApiCalls> {
-  const calls: ApiCalls = { order: [], csrf: 0, token: [], status: [], verify: [] };
+  const calls: ApiCalls = { order: [], csrf: 0, token: [], status: [], verify: [], me: 0, logout: [] };
+  let sessionUser: MockUser | null = options.user ?? null;
+  const signIn = () => {
+    sessionUser = options.signInAs ?? E2E_USER;
+  };
 
   await page.route("**/api/accounts/csrf/", async (route) => {
     calls.order.push("csrf");
@@ -88,6 +125,7 @@ export async function mockAuthApi(page: Page, options: MockOptions = {}): Promis
     calls.status.push(token);
     calls.order.push("status");
     const status = options.tokenStatus?.(call, token) ?? "pending";
+    if (status === "confirmed") signIn();
     await route.fulfill({
       status: 200,
       contentType: "application/json",
@@ -106,6 +144,7 @@ export async function mockAuthApi(page: Page, options: MockOptions = {}): Promis
     calls.order.push("verify");
     const result = options.verify?.(code, calls.verify.length - 1) ?? { status: 200 };
     if (result.status === 200) {
+      signIn();
       return route.fulfill({
         status: 200,
         contentType: "application/json",
@@ -116,6 +155,61 @@ export async function mockAuthApi(page: Page, options: MockOptions = {}): Promis
       status: 400,
       contentType: "application/json",
       body: JSON.stringify({ status: result.failure, detail: VERIFY_DETAIL[result.failure] }),
+    });
+  });
+
+  await page.route("**/api/accounts/me/", async (route) => {
+    const call = calls.me;
+    calls.me += 1;
+    calls.order.push("me");
+    if (options.meDelayMs) await new Promise((r) => setTimeout(r, options.meDelayMs));
+
+    const failure = options.meFailure?.(call) ?? null;
+    if (failure === "network") return route.abort("internetdisconnected");
+    if (typeof failure === "number") {
+      return route.fulfill({
+        status: failure,
+        contentType: "application/json",
+        body: JSON.stringify({ detail: "error" }),
+      });
+    }
+
+    if (!sessionUser) {
+      return route.fulfill({
+        status: 401,
+        contentType: "application/json",
+        body: JSON.stringify({ detail: "not_authenticated" }),
+      });
+    }
+    await route.fulfill({
+      status: 200,
+      contentType: "application/json",
+      body: JSON.stringify(sessionUser),
+    });
+  });
+
+  await page.route("**/api/accounts/logout/", async (route, request) => {
+    if (request.method() !== "POST") return route.fallback();
+    const headers = await request.allHeaders();
+    const call = calls.logout.length;
+    calls.logout.push({ csrfHeader: headers["x-csrftoken"] ?? null });
+    calls.order.push("logout");
+
+    const failure = options.logoutFailure?.(call) ?? null;
+    if (failure === "network") return route.abort("internetdisconnected");
+    if (typeof failure === "number") {
+      return route.fulfill({
+        status: failure,
+        contentType: "application/json",
+        body: JSON.stringify({ detail: "error" }),
+      });
+    }
+
+    sessionUser = null;
+    await route.fulfill({
+      status: 200,
+      contentType: "application/json",
+      body: JSON.stringify({ status: "ok" }),
     });
   });
 

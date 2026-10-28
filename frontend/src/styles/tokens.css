@@ -83,6 +83,7 @@
   --text-lg: 1.125rem; /* 18px — state titles */
   --text-xl: 1.375rem; /* 22px — page title (mobile) */
   --text-2xl: 1.625rem; /* 26px — page title */
+  --text-3xl: 2.5rem; /* 40px — landing hero title (desktop only) */
 
   --leading-tight: 1.25;
   --leading-snug: 1.4;
@@ -115,6 +116,10 @@
   /* ---------- Layout ---------- */
   --auth-card-width: 440px;
   --page-gutter: var(--space-4);
+  /* Same content width and header heights as AuthLayout's brand header. */
+  --site-max-width: 1120px;
+  --site-header-height: 72px;
+  --site-header-height-mobile: 64px;
 }
 
 @media (prefers-color-scheme: dark) {

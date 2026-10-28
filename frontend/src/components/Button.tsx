@@ -1,4 +1,5 @@
 import type { ComponentProps, ReactNode } from "react";
+import { Link } from "react-router-dom";
 import { Spinner } from "./Spinner";
 import styles from "./Button.module.css";
 
@@ -100,5 +101,30 @@ export function ButtonLink({
         {children}
       </Content>
     </a>
+  );
+}
+
+export interface ButtonRouterLinkProps extends ComponentProps<typeof Link>, StyleProps {}
+
+/**
+ * A react-router <Link> that looks like a Button — for in-app navigation
+ * (client-side, no full page load). Use ButtonLink for external URLs.
+ */
+export function ButtonRouterLink({
+  variant,
+  size,
+  fullWidth,
+  leadingIcon,
+  trailingIcon,
+  className,
+  children,
+  ...rest
+}: ButtonRouterLinkProps) {
+  return (
+    <Link className={classes({ variant, size, fullWidth }, className)} {...rest}>
+      <Content leadingIcon={leadingIcon} trailingIcon={trailingIcon}>
+        {children}
+      </Content>
+    </Link>
   );
 }

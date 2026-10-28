@@ -196,13 +196,6 @@ test.describe.serial("real backend", () => {
   });
 
   test("home: Chiqish logs out against the real backend", async ({ page }) => {
-    // Known backend issue: CSRF_TRUSTED_ORIGINS is not configured, so Django
-    // rejects the cross-origin POST /logout/ with 403 "Origin checking failed
-    // - http://localhost:3000 does not match any trusted origins." The UI
-    // correctly keeps the user signed in and shows "Tizimdan chiqib bo‘lmadi".
-    // Remove test.fail() once the backend trusts the frontend origin.
-    test.fail(true, "backend: CSRF_TRUSTED_ORIGINS missing http://localhost:3000");
-
     const code = bot.createCode(tgId(6));
     await page.request.post("http://localhost:8000/api/accounts/telegram/code/verify/", {
       data: { code },

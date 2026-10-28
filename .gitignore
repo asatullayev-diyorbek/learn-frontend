@@ -1,0 +1,11 @@
+node_modules/
+*.log
+.DS_Store
+
+# local test/screenshot scratch (Playwright smoke checks etc.)
+/screenshots/
+*.png
+*.jpg
+*.jpeg
+playwright-report/
+test-results/

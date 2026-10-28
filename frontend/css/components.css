@@ -1,0 +1,211 @@
+/*
+ * Learn — reusable components: buttons, inputs, cards, tab toggle, alerts.
+ * Depends on variables.css. Intended to be reused by pages beyond login.
+ */
+
+/* Card */
+.card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  padding: var(--space-6);
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  width: 100%;
+  min-height: 48px;
+  padding: var(--space-3) var(--space-5);
+  border-radius: var(--radius-md);
+  border: 1px solid transparent;
+  font-size: var(--fs-base);
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color var(--transition-fast),
+    border-color var(--transition-fast), color var(--transition-fast),
+    transform var(--transition-fast);
+  text-align: center;
+}
+
+.btn:active {
+  transform: scale(0.98);
+}
+
+.btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+  transform: none;
+}
+
+.btn-primary {
+  background: var(--color-brand);
+  color: var(--color-brand-contrast);
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: var(--color-brand-hover);
+}
+
+.btn-secondary {
+  background: var(--color-surface-muted);
+  color: var(--color-text);
+  border-color: var(--color-border);
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background: var(--color-border);
+}
+
+.btn-link {
+  width: auto;
+  min-height: auto;
+  padding: var(--space-1) 0;
+  background: none;
+  color: var(--color-brand);
+  font-weight: 500;
+}
+
+.btn-link:hover:not(:disabled) {
+  color: var(--color-brand-hover);
+  text-decoration: underline;
+}
+
+.btn-icon {
+  width: auto;
+  min-height: 40px;
+  min-width: 40px;
+  padding: var(--space-2);
+  background: var(--color-surface-muted);
+  color: var(--color-text-muted);
+  border-color: var(--color-border);
+  flex: 0 0 auto;
+}
+
+.btn-icon:hover:not(:disabled) {
+  background: var(--color-border);
+  color: var(--color-text);
+}
+
+/* Inputs */
+.field {
+  display: block;
+  width: 100%;
+}
+
+.field-label {
+  display: block;
+  font-size: var(--fs-sm);
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-2);
+}
+
+.input {
+  width: 100%;
+  min-height: 48px;
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font-size: var(--fs-md);
+  transition: border-color var(--transition-fast);
+}
+
+.input:focus {
+  border-color: var(--color-brand);
+}
+
+.input-code {
+  text-align: center;
+  letter-spacing: 0.5em;
+  font-family: var(--font-mono);
+  font-size: var(--fs-xl);
+  font-weight: 600;
+  padding-right: var(--space-2);
+}
+
+/* Tab toggle */
+.tab-toggle {
+  display: flex;
+  background: var(--color-surface-muted);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  padding: var(--space-1);
+  gap: var(--space-1);
+}
+
+.tab-toggle button {
+  flex: 1 1 0;
+  border: none;
+  background: transparent;
+  color: var(--color-text-muted);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  transition: background-color var(--transition-fast), color var(--transition-fast);
+}
+
+.tab-toggle button[aria-selected="true"] {
+  background: var(--color-surface);
+  color: var(--color-text);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Alerts / inline messages */
+.alert {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  border-radius: var(--radius-md);
+  padding: var(--space-3) var(--space-4);
+  font-size: var(--fs-sm);
+  line-height: 1.4;
+}
+
+.alert-info {
+  background: var(--color-surface-muted);
+  color: var(--color-text-muted);
+}
+
+.alert-success {
+  background: var(--color-success-bg);
+  color: var(--color-success);
+}
+
+.alert-danger {
+  background: var(--color-danger-bg);
+  color: var(--color-danger);
+}
+
+.alert-warning {
+  background: var(--color-warning-bg);
+  color: var(--color-warning);
+}
+
+.alert[hidden] {
+  display: none;
+}
+
+/* Spinner */
+.spinner {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

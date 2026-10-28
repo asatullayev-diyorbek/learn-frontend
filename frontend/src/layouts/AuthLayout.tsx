@@ -1,6 +1,8 @@
 import type { ReactNode } from "react";
+import { Link } from "react-router-dom";
 import { BrandMark } from "../components/BrandMark";
 import { Card } from "../components/Card";
+import { ROUTES } from "../router/paths";
 import styles from "./AuthLayout.module.css";
 
 export interface AuthLayoutProps {
@@ -19,7 +21,9 @@ export function AuthLayout({ title, description, children, aside }: AuthLayoutPr
   return (
     <div className={styles.shell}>
       <header className={styles.header}>
-        <BrandMark />
+        <Link to={ROUTES.home} className={styles.brandLink} aria-label="Learn — bosh sahifa">
+          <BrandMark />
+        </Link>
       </header>
 
       <main className={styles.main}>

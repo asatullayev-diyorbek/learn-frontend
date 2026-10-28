@@ -3,7 +3,7 @@
  * layer (contract shapes identical to the Django backend).
  */
 import { expect, test, type Page } from "@playwright/test";
-import { BOT_URL, CSRF_TOKEN, mockAuthApi, tokenFor } from "./mockApi";
+import { BOT_URL, CSRF_TOKEN, E2E_USER, mockAuthApi, tokenFor } from "./mockApi";
 
 const liveRegion = (page: Page) => page.getByTestId("live-region");
 const tokenTab = (page: Page) => page.getByRole("tab", { name: "Havola orqali" });
@@ -27,8 +27,10 @@ test.describe("method 1 — deep link / token", () => {
     await expect(page.getByTestId("token-countdown")).toContainText(/^.*(10:00|9:5\d)$/);
     await expect(liveRegion(page)).toContainText("Kirish havolasi tayyor");
 
-    // CSRF cookie is fetched once, before the token request.
-    expect(calls.order.slice(0, 2)).toEqual(["csrf", "token"]);
+    // /me (the "already signed in?" gate) resolves before the token flow
+    // starts at all; the token request is paused until it does. Then CSRF
+    // is fetched once, before the token request.
+    expect(calls.order.slice(0, 3)).toEqual(["me", "csrf", "token"]);
     expect(calls.csrf).toBe(1);
   });
 
@@ -149,7 +151,10 @@ test.describe("tabs", () => {
     await page.goto("/login");
     await expect(page.getByTestId("token-ready")).toBeVisible();
 
-    // First Tab stop on the page is the selected tab (roving tabindex).
+    // First Tab stop on the page is the header's home link; second is the
+    // selected tab (roving tabindex).
+    await page.keyboard.press("Tab");
+    await expect(page.getByRole("link", { name: "Learn — bosh sahifa" })).toBeFocused();
     await page.keyboard.press("Tab");
     await expect(tokenTab(page)).toBeFocused();
     const ring = await tokenTab(page).evaluate((el) => getComputedStyle(el).boxShadow);
@@ -335,5 +340,43 @@ test.describe("responsive layout", () => {
       const box = await target.boundingBox();
       expect(box?.height ?? 0).toBeGreaterThanOrEqual(44);
     }
+  });
+});
+
+test.describe("header brand link", () => {
+  test("the logo links back to the home page", async ({ page }) => {
+    await mockAuthApi(page);
+    await page.goto("/login");
+    await expect(page.getByTestId("token-ready")).toBeVisible();
+
+    const brandLink = page.getByRole("link", { name: "Learn — bosh sahifa" });
+    await expect(brandLink).toHaveAttribute("href", "/");
+    await brandLink.click();
+    await expect(page).toHaveURL("/");
+  });
+});
+
+test.describe("already signed in", () => {
+  test("visiting /login with an existing session skips the form and bounces home", async ({
+    page,
+  }) => {
+    const calls = await mockAuthApi(page, { user: E2E_USER });
+    await page.goto("/login");
+
+    // Never flashes the login form or spends a one-time token on someone
+    // who's already signed in.
+    await expect(page).toHaveURL("/", { timeout: 5000 });
+    await expect(page.getByRole("heading", { level: 1, name: "Xush kelibsiz, Diyorbek!" })).toBeVisible();
+    expect(calls.token).toHaveLength(0);
+  });
+
+  test("a /me hiccup (network error) fails open: the login form still works", async ({ page }) => {
+    const calls = await mockAuthApi(page, { meFailure: () => "network" });
+    await page.goto("/login");
+
+    // Doesn't get stuck waiting on a broken /me check.
+    await expect(page.getByRole("heading", { level: 1, name: "Tizimga kirish" })).toBeVisible();
+    await expect(page.getByTestId("token-ready")).toBeVisible();
+    expect(calls.token).toHaveLength(1);
   });
 });

@@ -104,9 +104,13 @@ export function useTokenLogin({ paused = false }: { paused?: boolean } = {}) {
   }, []);
 
   useEffect(() => {
+    // Also gates the *initial* request, not just polling: a caller that
+    // starts out paused (e.g. "is this browser already signed in?") must
+    // not burn a one-time token before it even knows whether to show the form.
+    if (paused) return;
     void load(true);
     return () => requestController.current?.abort();
-  }, [load]);
+  }, [load, paused]);
 
   const retry = useCallback(() => {
     dispatch({ type: "start" });

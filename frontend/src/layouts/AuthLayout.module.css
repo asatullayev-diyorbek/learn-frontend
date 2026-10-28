@@ -16,6 +16,17 @@
   margin: 0 auto;
 }
 
+.brandLink {
+  display: inline-flex;
+  color: inherit;
+  border-radius: var(--radius-sm);
+}
+
+.brandLink:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--color-focus-ring);
+}
+
 .main {
   display: flex;
   align-items: center;

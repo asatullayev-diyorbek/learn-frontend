@@ -5,6 +5,7 @@
  */
 import { expect, test, type Page } from "@playwright/test";
 import { CSRF_TOKEN, E2E_USER, mockAuthApi } from "./mockApi";
+import { mockCoursesApi } from "./mockCoursesApi";
 
 const header = (page: Page) => page.getByRole("banner");
 const account = (page: Page) => page.getByTestId("header-account");
@@ -80,6 +81,7 @@ test.describe("guest", () => {
 
     const order = [
       header(page).getByRole("link", { name: "Learn — bosh sahifa" }),
+      header(page).getByRole("link", { name: "Kurslar" }),
       signInLink(page),
       heroCta(page),
     ];
@@ -118,8 +120,9 @@ test.describe("loading", () => {
 });
 
 test.describe("authenticated", () => {
-  test("greets the user and shows the courses empty state", async ({ page }) => {
+  test("greets the user and invites them into the course catalog", async ({ page }) => {
     const calls = await mockAuthApi(page, { user: E2E_USER });
+    await mockCoursesApi(page, { signedIn: true });
     await page.goto("/");
 
     await expect(welcome(page, "Diyorbek")).toBeVisible();
@@ -127,15 +130,20 @@ test.describe("authenticated", () => {
     await expect(signOutButton(page)).toBeVisible();
     await expect(signInLink(page)).toHaveCount(0);
 
-    const empty = page.getByTestId("courses-empty");
-    await expect(empty.getByRole("heading", { name: "Kurslar tez orada qo‘shiladi" })).toBeVisible();
-    // No dead-end action inside the empty state.
-    await expect(empty.getByRole("button")).toHaveCount(0);
-    await expect(empty.getByRole("link")).toHaveCount(0);
+    // No stale "coming soon": the card points at the real catalog.
+    const invite = page.getByTestId("courses-invite");
+    await expect(invite.getByRole("heading", { name: "O‘qishni boshlang" })).toBeVisible();
+    await expect(page.getByText("tez orada qo‘shiladi")).toHaveCount(0);
+    const browse = invite.getByRole("link", { name: "Kurslarni ko‘rish" });
+    await expect(browse).toHaveAttribute("href", "/courses");
 
     // The guest landing is not shown to signed-in users.
     await expect(page.getByTestId("home-guest")).toHaveCount(0);
     expect(calls.me).toBe(1);
+
+    await browse.click();
+    await expect(page).toHaveURL(/\/courses$/);
+    await expect(page.getByRole("heading", { level: 1, name: "Kurslar" })).toBeVisible();
   });
 
   const fallbacks = [

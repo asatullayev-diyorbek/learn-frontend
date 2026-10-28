@@ -44,9 +44,10 @@ export const HOME_COPY = {
   member: {
     welcome: (name: string) => `Xush kelibsiz, ${name}!`,
     lead: "Bu sizning Learn’dagi sahifangiz. O‘qishni shu yerdan boshlaysiz.",
-    emptyTitle: "Kurslar tez orada qo‘shiladi",
-    emptyDescription:
-      "Birinchi kurslar ustida ishlayapmiz. Tayyor bo‘lishi bilan ular shu yerda paydo bo‘ladi.",
+    browseTitle: "O‘qishni boshlang",
+    browseDescription:
+      "Kurslar katalogini ko‘rib chiqing: yo‘nalish va darajangizga mos kursni tanlab, unga yoziling.",
+    browseAction: "Kurslarni ko‘rish",
   },
 
   loading: "Sahifa yuklanmoqda…",

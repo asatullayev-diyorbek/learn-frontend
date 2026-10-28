@@ -176,7 +176,7 @@ test.describe.serial("real backend", () => {
     await expect(page).toHaveURL(/localhost:3000\/$/, { timeout: 10_000 });
     await expectSessionCookie(page);
     await expect(page.getByRole("heading", { level: 1, name: "Xush kelibsiz, E2E!" })).toBeVisible();
-    await expect(page.getByTestId("courses-empty")).toBeVisible();
+    await expect(page.getByTestId("courses-invite")).toBeVisible();
   });
 
   test("home: a fresh visit reads the session from /me; guests get the landing", async ({ page }) => {
@@ -205,5 +205,65 @@ test.describe.serial("real backend", () => {
 
     await page.getByRole("banner").getByRole("button", { name: "Chiqish" }).click();
     await expect(page.getByTestId("home-guest")).toBeVisible({ timeout: 5_000 });
+  });
+
+  /* Courses — needs `python manage.py seed_courses` (10 courses, page size 9). */
+
+  test("courses: the real catalog lists, paginates and filters", async ({ page }) => {
+    await page.goto("/courses");
+    const cards = page.getByTestId("course-card");
+    await expect(cards.first()).toBeVisible({ timeout: 10_000 });
+    const total = Number((await page.getByTestId("courses-count").textContent())?.match(/\d+/)?.[0]);
+    expect(total).toBeGreaterThanOrEqual(10);
+    await expect(cards).toHaveCount(9);
+
+    await page.getByRole("button", { name: "Yana yuklash" }).click();
+    await expect(cards).toHaveCount(Math.min(total, 18));
+
+    await page.getByTestId("category-filter").getByRole("radio", { name: "Backend", exact: true }).click();
+    await expect(page).toHaveURL(/category=backend/);
+    await expect(page.getByTestId("courses-refreshing")).toHaveCount(0);
+    for (const card of await cards.all()) await expect(card).toContainText("Backend");
+
+    await page.getByRole("searchbox", { name: "Kurslarni qidirish" }).fill("python");
+    await expect(page).toHaveURL(/search=python/);
+    await expect(cards.filter({ hasText: "Python asoslari" })).toBeVisible();
+  });
+
+  test("courses: guest sees the sign-in CTA; an unknown slug is 'Kurs topilmadi'", async ({ page }) => {
+    await page.goto("/courses/python-asoslari");
+    await expect(page.getByRole("heading", { level: 1, name: "Python asoslari" })).toBeVisible();
+    await expect(page.getByRole("link", { name: "Kirish va kursga yozilish" })).toHaveAttribute("href", "/login");
+
+    await page.goto("/courses/bunday-kurs-yoq");
+    await expect(page.getByRole("heading", { level: 1, name: "Kurs topilmadi" })).toBeVisible();
+  });
+
+  test("courses: enroll → unenroll round trip against the real API", async ({ page }) => {
+    const code = bot.createCode(tgId(7));
+    const signIn = await page.request.post("http://localhost:8000/api/accounts/telegram/code/verify/", {
+      data: { code },
+    });
+    expect(signIn.status()).toBe(200);
+
+    await page.goto("/courses/python-asoslari");
+    const count = page.getByTestId("course-detail").locator("header").getByTestId("course-enrolled-count");
+    await expect(count).toBeVisible({ timeout: 10_000 });
+    const before = Number((await count.textContent())?.match(/\d+/)?.[0]);
+
+    await page.getByRole("button", { name: "Kursga yozilish" }).click();
+    await expect(page.getByTestId("enrolled-status")).toContainText("Yozilgansiz");
+    await expect(count).toHaveText(`${before + 1} ta o‘quvchi`);
+
+    // Persisted server-side: a reload still shows the enrolment.
+    await page.reload();
+    await expect(page.getByTestId("enrolled-status")).toBeVisible({ timeout: 10_000 });
+    await expect(count).toHaveText(`${before + 1} ta o‘quvchi`);
+
+    await page.getByRole("button", { name: "Kursdan chiqish" }).click();
+    await expect(page.getByRole("button", { name: "Kursga yozilish" })).toBeVisible();
+    await expect(count).toHaveText(`${before} ta o‘quvchi`);
+    await page.reload();
+    await expect(page.getByRole("button", { name: "Kursga yozilish" })).toBeVisible({ timeout: 10_000 });
   });
 });

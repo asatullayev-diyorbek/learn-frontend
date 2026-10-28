@@ -72,3 +72,77 @@ export interface ApiErrorBody {
   detail?: string;
   [key: string]: unknown;
 }
+
+/* ---------------------------------------------------------------------------
+ * Courses (Django, apps/courses)
+ * ------------------------------------------------------------------------ */
+
+export type CourseLevel = "beginner" | "intermediate" | "advanced";
+
+/** GET /courses/categories/ → 200, one item */
+export interface Category {
+  id: number;
+  name: string;
+  slug: string;
+  course_count: number;
+}
+
+/** The category as embedded in a course. */
+export interface CourseCategory {
+  id: number;
+  name: string;
+  slug: string;
+}
+
+export interface CourseInstructor {
+  id: number;
+  full_name: string;
+  /**
+   * Not part of the current contract. Typed as optional so the detail page
+   * shows them if the backend ever adds them, and simply omits them today.
+   */
+  title?: string;
+  bio?: string;
+}
+
+/** GET /courses/ → `results[]` item */
+export interface CourseListItem {
+  id: number;
+  slug: string;
+  title: string;
+  summary: string;
+  level: CourseLevel;
+  category: CourseCategory;
+  instructor: CourseInstructor;
+  /** May be an empty string (no cover). */
+  cover_image_url: string;
+  enrolled_count: number;
+  /** Always false for a guest. */
+  is_enrolled: boolean;
+}
+
+/** GET /courses/<slug>/ → 200 (404 {detail:"not_found"}) */
+export interface CourseDetail extends CourseListItem {
+  description: string;
+}
+
+/** GET /courses/ → 200, the paginated envelope */
+export interface CoursePage {
+  count: number;
+  /** Absolute URL of the next page, or null on the last one. */
+  next: string | null;
+  previous: string | null;
+  results: CourseListItem[];
+}
+
+/** POST /courses/<slug>/enroll/ → 200 */
+export interface EnrollResponse {
+  status: "enrolled";
+  enrolled_count: number;
+}
+
+/** DELETE /courses/<slug>/enroll/ → 200 */
+export interface UnenrollResponse {
+  status: "not_enrolled";
+  enrolled_count: number;
+}

@@ -1,5 +1,7 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
 import { SiteLayout } from "../layouts/SiteLayout";
+import { CourseDetailPage } from "../pages/CourseDetailPage";
+import { CoursesPage } from "../pages/CoursesPage";
 import { HomePage } from "../pages/HomePage";
 import { LoginPage } from "../pages/LoginPage";
 import { ROUTES } from "./paths";
@@ -10,7 +12,11 @@ export const router = createBrowserRouter([
   // Regular site pages share the header/footer and the current-user state.
   {
     element: <SiteLayout />,
-    children: [{ path: ROUTES.home, element: <HomePage /> }],
+    children: [
+      { path: ROUTES.home, element: <HomePage /> },
+      { path: ROUTES.courses, element: <CoursesPage /> },
+      { path: ROUTES.courseDetailPattern, element: <CourseDetailPage /> },
+    ],
   },
   { path: "*", element: <Navigate to={ROUTES.home} replace /> },
 ]);

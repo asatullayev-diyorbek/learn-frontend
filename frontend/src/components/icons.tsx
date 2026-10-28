@@ -133,3 +133,32 @@ export function PencilIcon(props: IconProps) {
     </Svg>
   );
 }
+
+export function SearchIcon(props: IconProps) {
+  return (
+    <Svg {...props}>
+      <circle cx="11" cy="11" r="6.25" />
+      <path d="m19.5 19.5-3.9-3.9" />
+    </Svg>
+  );
+}
+
+export function UsersIcon(props: IconProps) {
+  return (
+    <Svg {...props}>
+      <circle cx="9.5" cy="8.75" r="3.25" />
+      <path d="M3.75 19c.4-3.05 2.75-5 5.75-5s5.35 1.95 5.75 5" />
+      <path d="M15.25 5.6a3.25 3.25 0 0 1 0 6.3" />
+      <path d="M17.5 14.35c1.55.6 2.6 2.25 2.75 4.65" />
+    </Svg>
+  );
+}
+
+export function ArrowLeftIcon(props: IconProps) {
+  return (
+    <Svg {...props}>
+      <path d="M19 12H5.5" />
+      <path d="m11 6-6 6 6 6" />
+    </Svg>
+  );
+}

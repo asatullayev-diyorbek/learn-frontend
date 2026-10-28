@@ -1,0 +1,342 @@
+/* ---------- page header ---------- */
+.page {
+  padding: var(--space-12) 0 var(--space-16);
+  animation: enter var(--duration-base) var(--ease-out);
+}
+
+.pageTitle {
+  font-size: var(--text-2xl);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+  color: var(--color-text);
+}
+
+.pageLead {
+  max-width: 62ch;
+  margin-top: var(--space-2);
+  font-size: var(--text-base);
+  line-height: var(--leading-normal);
+  color: var(--color-text-secondary);
+}
+
+/* ---------- filters ---------- */
+.filters {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  margin-top: var(--space-8);
+  padding-bottom: var(--space-6);
+  border-bottom: 1px solid var(--color-divider);
+}
+
+.search {
+  position: relative;
+  max-width: 480px;
+}
+
+.searchIcon {
+  position: absolute;
+  top: 50%;
+  left: var(--space-3);
+  transform: translateY(-50%);
+  color: var(--color-text-tertiary);
+  pointer-events: none;
+}
+
+/* Same field treatment as TextField, with room for the leading icon. */
+.searchInput {
+  width: 100%;
+  min-height: var(--control-height-md);
+  padding: 0 var(--space-3) 0 calc(var(--space-3) + 18px + var(--space-2));
+  background: var(--color-surface);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-md);
+  color: var(--color-text);
+  font-size: var(--text-md);
+  box-shadow: var(--shadow-xs);
+  transition:
+    border-color var(--duration-fast) var(--ease-standard),
+    box-shadow var(--duration-fast) var(--ease-standard);
+}
+
+.searchInput::placeholder {
+  color: var(--color-text-disabled);
+}
+
+.searchInput:hover:not(:focus) {
+  border-color: var(--color-text-tertiary);
+}
+
+.searchInput:focus,
+.searchInput:focus-visible {
+  outline: none;
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px var(--color-focus-ring);
+}
+
+.filterRow {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  min-width: 0;
+}
+
+.filterLabel {
+  flex: none;
+  width: 88px;
+  /* Vertically centred on the first row of chips. */
+  padding-top: calc((var(--control-height-sm) - var(--text-sm) * var(--leading-snug)) / 2);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-snug);
+  color: var(--color-text-secondary);
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  min-width: 0;
+}
+
+.chip {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1-5);
+  min-height: var(--control-height-sm);
+  max-width: 100%;
+  padding: 0 var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+  background: var(--color-surface);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  line-height: 1;
+  color: var(--color-text-secondary);
+  white-space: nowrap;
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    background-color var(--duration-fast) var(--ease-standard),
+    border-color var(--duration-fast) var(--ease-standard),
+    color var(--duration-fast) var(--ease-standard),
+    box-shadow var(--duration-fast) var(--ease-standard);
+}
+
+.chip:hover {
+  border-color: var(--color-border-strong);
+  color: var(--color-text);
+}
+
+.chip:has(.chipInput:checked) {
+  border-color: var(--color-accent-border);
+  background: var(--color-accent-subtle);
+  color: var(--color-accent-text);
+}
+
+.chip:has(.chipInput:focus-visible) {
+  box-shadow: 0 0 0 3px var(--color-focus-ring);
+}
+
+/* The native radio stays in the accessibility tree and the Tab order. */
+.chipInput {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.chipInput:focus-visible {
+  outline: none;
+}
+
+.chipCount {
+  font-size: var(--text-xs);
+  font-variant-numeric: tabular-nums;
+  color: var(--color-text-tertiary);
+}
+
+.chip:has(.chipInput:checked) .chipCount {
+  color: var(--color-accent-text);
+}
+
+.filterError {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0 var(--space-2);
+  min-height: var(--control-height-sm);
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+}
+
+/* ---------- results ---------- */
+.results {
+  margin-top: var(--space-6);
+}
+
+.resultsBar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: 20px;
+  margin-bottom: var(--space-4);
+}
+
+.resultsCount {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-snug);
+  color: var(--color-text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+
+.refreshing {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1-5);
+  font-size: var(--text-sm);
+  line-height: var(--leading-snug);
+  color: var(--color-text-tertiary);
+  animation: fadeIn var(--duration-base) var(--ease-out) 120ms both;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-6);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.gridItem {
+  min-width: 0;
+}
+
+/*
+ * Previous results stay put while a filter request is in flight, just
+ * dimmed — delayed, so fast responses never flicker at all.
+ */
+.dimmable {
+  transition: opacity var(--duration-base) var(--ease-standard);
+}
+
+[data-refreshing] .dimmable {
+  opacity: 0.55;
+  transition-delay: 120ms;
+}
+
+.more {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+  margin-top: var(--space-10);
+}
+
+.moreError {
+  width: 100%;
+  max-width: 440px;
+}
+
+.status {
+  display: flex;
+  justify-content: center;
+  padding: var(--space-12) 0;
+}
+
+/* ---------- skeleton card ---------- */
+.coverSkeleton {
+  aspect-ratio: 16 / 9;
+}
+
+.cardSkeletonBody {
+  gap: var(--space-3);
+}
+
+.cardSkeletonFooter {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin-top: var(--space-2);
+}
+
+/* ---------- responsive ---------- */
+@media (max-width: 960px) {
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-5);
+  }
+}
+
+@media (max-width: 640px) {
+  .grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-4);
+  }
+
+  .filterRow {
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .filterLabel {
+    width: auto;
+    padding-top: 0;
+  }
+}
+
+@media (max-width: 520px) {
+  .page {
+    padding: var(--space-8) 0 var(--space-12);
+  }
+
+  .pageTitle {
+    font-size: var(--text-xl);
+  }
+
+  .filters {
+    margin-top: var(--space-6);
+  }
+
+  .search {
+    max-width: none;
+  }
+
+  /* 44px touch targets on phones. */
+  .chip {
+    min-height: var(--control-height-md);
+    padding: 0 var(--space-4);
+  }
+
+  .more {
+    margin-top: var(--space-8);
+  }
+
+  .more > button {
+    width: 100%;
+  }
+
+  .status {
+    padding: var(--space-10) 0;
+  }
+}
+
+@keyframes enter {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+}

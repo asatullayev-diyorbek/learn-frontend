@@ -1,11 +1,11 @@
 import { useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Alert } from "../../components/Alert";
 import { Button, ButtonRouterLink } from "../../components/Button";
 import { CheckIcon, TelegramIcon } from "../../components/icons";
 import { LiveRegion } from "../../components/LiveRegion";
 import { Skeleton } from "../../components/Skeleton";
-import { ROUTES } from "../../router/paths";
+import { loginWithNext } from "../../router/paths";
 import type { CourseDetail } from "../../types/api";
 import { ACCOUNT_COPY } from "../auth/copy";
 import { useCurrentUser } from "../auth/useCurrentUser";
@@ -39,6 +39,10 @@ export function EnrollPanel({ course, onChanged }: EnrollPanelProps) {
   const { state, toggle } = useEnrollment(course, onChanged);
   const actionRef = useRef<HTMLButtonElement>(null);
   const pending = state.status === "pending";
+  const location = useLocation();
+  // So signing in from here returns to this course instead of dropping the
+  // visitor on the home page.
+  const loginHref = loginWithNext(location.pathname + location.search);
 
   // The enroll and unenroll buttons are different elements; after a flip,
   // hand focus to the one that replaced the button the user just pressed.
@@ -64,7 +68,7 @@ export function EnrollPanel({ course, onChanged }: EnrollPanelProps) {
       {(session.status === "guest" || session.status === "error") && (
         <div className={styles.panelStack} data-testid="enroll-guest">
           <ButtonRouterLink
-            to={ROUTES.login}
+            to={loginHref}
             variant="primary"
             size="lg"
             fullWidth
@@ -119,7 +123,7 @@ export function EnrollPanel({ course, onChanged }: EnrollPanelProps) {
                 {state.error === "not_authenticated" && (
                   <>
                     {" "}
-                    <Link to={ROUTES.login} className={styles.inlineLink}>
+                    <Link to={loginHref} className={styles.inlineLink}>
                       {ACCOUNT_COPY.signIn}
                     </Link>
                   </>

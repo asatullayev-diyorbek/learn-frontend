@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { LiveRegion } from "../components/LiveRegion";
 import { Skeleton } from "../components/Skeleton";
 import { AuthLayout } from "../layouts/AuthLayout";
@@ -11,7 +11,7 @@ import { SignedInState } from "../features/auth/SignedInState";
 import { useCodeLogin } from "../features/auth/useCodeLogin";
 import { useCurrentUser } from "../features/auth/useCurrentUser";
 import { useTokenLogin } from "../features/auth/useTokenLogin";
-import { ROUTES } from "../router/paths";
+import { getSafeNextPath, ROUTES } from "../router/paths";
 import styles from "./LoginPage.module.css";
 
 /** Long enough to register the success state, short enough not to feel slow. */
@@ -28,7 +28,11 @@ export function LoginPage() {
 
 function LoginPageContent() {
   const navigate = useNavigate();
+  const location = useLocation();
   const session = useCurrentUser();
+  // Where to land after signing in: wherever sent us here (e.g. a course
+  // page's "sign in to enroll" link), falling back to home.
+  const destination = getSafeNextPath(location.search) ?? ROUTES.home;
 
   // Fail open: the login form must keep working even if GET /me hiccups, so
   // only an actual "authenticated" answer changes anything here.
@@ -44,17 +48,17 @@ function LoginPageContent() {
 
   useEffect(() => {
     if (!alreadySignedIn) return;
-    navigate(ROUTES.home, { replace: true });
-  }, [alreadySignedIn, navigate]);
+    navigate(destination, { replace: true });
+  }, [alreadySignedIn, destination, navigate]);
 
   useEffect(() => {
     if (!signedIn) return;
     const timer = window.setTimeout(
-      () => navigate(ROUTES.home, { replace: true, state: { signedIn: true } }),
+      () => navigate(destination, { replace: true, state: { signedIn: true } }),
       REDIRECT_DELAY_MS,
     );
     return () => window.clearTimeout(timer);
-  }, [signedIn, navigate]);
+  }, [signedIn, destination, navigate]);
 
   return (
     <AuthLayout

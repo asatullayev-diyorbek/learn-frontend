@@ -233,7 +233,10 @@ test.describe.serial("real backend", () => {
   test("courses: guest sees the sign-in CTA; an unknown slug is 'Kurs topilmadi'", async ({ page }) => {
     await page.goto("/courses/python-asoslari");
     await expect(page.getByRole("heading", { level: 1, name: "Python asoslari" })).toBeVisible();
-    await expect(page.getByRole("link", { name: "Kirish va kursga yozilish" })).toHaveAttribute("href", "/login");
+    await expect(page.getByRole("link", { name: "Kirish va kursga yozilish" })).toHaveAttribute(
+      "href",
+      "/login?next=%2Fcourses%2Fpython-asoslari",
+    );
 
     await page.goto("/courses/bunday-kurs-yoq");
     await expect(page.getByRole("heading", { level: 1, name: "Kurs topilmadi" })).toBeVisible();
@@ -265,5 +268,21 @@ test.describe.serial("real backend", () => {
     await expect(count).toHaveText(`${before} ta o‘quvchi`);
     await page.reload();
     await expect(page.getByRole("button", { name: "Kursga yozilish" })).toBeVisible({ timeout: 10_000 });
+  });
+
+  test("courses: signing in from a course's CTA returns to that course against the real API", async ({
+    page,
+  }) => {
+    await page.goto("/courses/python-asoslari");
+    await page.getByRole("link", { name: "Kirish va kursga yozilish" }).click();
+    await expect(page).toHaveURL(/\/login\?next=%2Fcourses%2Fpython-asoslari$/);
+
+    const code = bot.createCode(tgId(8));
+    await page.getByRole("tab", { name: "Kod orqali" }).click();
+    await page.getByLabel("Tasdiqlash kodi").fill(code);
+    await page.getByRole("button", { name: "Tasdiqlash va kirish" }).click();
+
+    await expect(page).toHaveURL(/\/courses\/python-asoslari$/, { timeout: 10_000 });
+    await expect(page.getByRole("heading", { level: 1, name: "Python asoslari" })).toBeVisible();
   });
 });

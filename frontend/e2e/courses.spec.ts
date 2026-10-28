@@ -454,13 +454,28 @@ test.describe("enrolment", () => {
 
     const panel = page.getByTestId("enroll-guest");
     const cta = panel.getByRole("link", { name: "Kirish va kursga yozilish" });
-    await expect(cta).toHaveAttribute("href", "/login");
+    await expect(cta).toHaveAttribute("href", "/login?next=%2Fcourses%2Fpython-asoslari");
     await expect(panel).toContainText("Kursga yozilish uchun Telegram orqali tizimga kiring.");
     await expect(enrollButton(page)).toHaveCount(0);
 
     await cta.click();
-    await expect(page).toHaveURL(/\/login$/);
+    await expect(page).toHaveURL(/\/login\?next=/);
     expect(calls.enroll).toEqual([]);
+  });
+
+  test("guest: signing in from the sign-in CTA returns to the course, not home", async ({ page }) => {
+    await guest(page);
+    await page.goto("/courses/python-asoslari");
+
+    await page.getByTestId("enroll-guest").getByRole("link", { name: "Kirish va kursga yozilish" }).click();
+    await expect(page).toHaveURL("/login?next=%2Fcourses%2Fpython-asoslari");
+
+    await page.getByRole("tab", { name: "Kod orqali" }).click();
+    await page.getByLabel("Tasdiqlash kodi").fill("12345");
+    await page.getByRole("button", { name: "Tasdiqlash va kirish" }).click();
+
+    await expect(page).toHaveURL("/courses/python-asoslari", { timeout: 5000 });
+    await expect(page.getByRole("heading", { level: 1, name: "Python asoslari" })).toBeVisible();
   });
 
   test("guest: is_enrolled from a stale cache never leaks — the CTA is still sign-in", async ({ page }) => {
@@ -562,7 +577,10 @@ test.describe("enrolment", () => {
     await enrollButton(page).click();
     const error = page.getByTestId("enroll-error");
     await expect(error).toContainText("Sessiyangiz tugagan.");
-    await expect(error.getByRole("link", { name: "Kirish" })).toHaveAttribute("href", "/login");
+    await expect(error.getByRole("link", { name: "Kirish" })).toHaveAttribute(
+      "href",
+      "/login?next=%2Fcourses%2Fpython-asoslari",
+    );
     await expect(enrollButton(page)).toBeEnabled();
   });
 });

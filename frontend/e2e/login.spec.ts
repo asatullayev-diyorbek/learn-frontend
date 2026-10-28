@@ -379,4 +379,20 @@ test.describe("already signed in", () => {
     await expect(page.getByTestId("token-ready")).toBeVisible();
     expect(calls.token).toHaveLength(1);
   });
+
+  test("a well-formed ?next= sends an already-signed-in visitor there instead of home", async ({
+    page,
+  }) => {
+    await mockAuthApi(page, { user: E2E_USER });
+    await page.goto("/login?next=%2Fcourses");
+    await expect(page).toHaveURL("/courses", { timeout: 5000 });
+  });
+
+  for (const unsafeNext of ["https://evil.example/", "//evil.example", "/\\evil.example"]) {
+    test(`an unsafe ?next= (${unsafeNext}) is ignored, falling back to home`, async ({ page }) => {
+      await mockAuthApi(page, { user: E2E_USER });
+      await page.goto(`/login?next=${encodeURIComponent(unsafeNext)}`);
+      await expect(page).toHaveURL("/", { timeout: 5000 });
+    });
+  }
 });

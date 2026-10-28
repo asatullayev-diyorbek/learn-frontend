@@ -1,0 +1,162 @@
+/*
+ * Learn design tokens — the single source of truth for colour, spacing,
+ * radius, typography, elevation and motion. Components consume these via
+ * CSS Modules; future pages (home, courses, lesson, profile, studio) must
+ * reuse them instead of introducing new raw values.
+ */
+
+:root {
+  color-scheme: light;
+
+  /* ---------- Colour: neutrals ---------- */
+  --color-bg: #ffffff;
+  --color-bg-subtle: #f6f6f8;
+  --color-bg-muted: #efeff3;
+  --color-surface: #ffffff;
+  --color-border: #e7e7ec;
+  --color-border-strong: #d3d3dc;
+  --color-divider: #efeff3;
+  --color-segment-thumb: #ffffff;
+
+  --color-text: #15151c;
+  --color-text-secondary: #565769;
+  --color-text-tertiary: #85869a;
+  --color-text-disabled: #a9aab8;
+
+  /* ---------- Colour: accent (blue-violet) ---------- */
+  --color-accent: #5145e5;
+  --color-accent-hover: #4438d4;
+  --color-accent-active: #3a2fbd;
+  --color-accent-subtle: #f1f0fe;
+  --color-accent-subtle-hover: #e6e4fd;
+  --color-accent-border: #cfcbfa;
+  --color-accent-text: #4a3ed9;
+  --color-on-accent: #ffffff;
+  --color-focus-ring: rgb(81 69 229 / 0.42);
+
+  /* Third-party brand mark, used only on the Telegram glyph itself. */
+  --color-telegram: #229ed9;
+
+  /* ---------- Colour: status ---------- */
+  --color-danger: #c2352b;
+  --color-danger-subtle: #fdf2f1;
+  --color-danger-border: #f3cfcb;
+  --color-success: #15803d;
+  --color-success-subtle: #eef8f1;
+  --color-success-border: #c6e7d1;
+  --color-warning: #a35a00;
+  --color-warning-subtle: #fff6e9;
+  --color-warning-border: #f3dbb3;
+
+  /* ---------- Spacing (4px grid) ---------- */
+  --space-0-5: 2px;
+  --space-1: 4px;
+  --space-1-5: 6px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+
+  /* ---------- Radius ---------- */
+  --radius-xs: 6px;
+  --radius-sm: 8px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 18px;
+  --radius-full: 999px;
+
+  /* ---------- Typography ---------- */
+  --font-sans: "Inter Variable", "Inter", ui-sans-serif, system-ui, -apple-system,
+    "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", "JetBrains Mono", "Cascadia Mono", Menlo,
+    Consolas, "Liberation Mono", monospace;
+
+  --text-xs: 0.75rem; /* 12px — meta, badges */
+  --text-sm: 0.8125rem; /* 13px — hints, captions */
+  --text-base: 0.9375rem; /* 15px — body, controls */
+  --text-md: 1rem; /* 16px — inputs on mobile (no iOS zoom) */
+  --text-lg: 1.125rem; /* 18px — state titles */
+  --text-xl: 1.375rem; /* 22px — page title (mobile) */
+  --text-2xl: 1.625rem; /* 26px — page title */
+
+  --leading-tight: 1.25;
+  --leading-snug: 1.4;
+  --leading-normal: 1.55;
+
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+
+  --tracking-tight: -0.022em;
+  --tracking-snug: -0.011em;
+  --tracking-wide: 0.02em;
+
+  /* ---------- Controls ---------- */
+  --control-height-sm: 36px;
+  --control-height-md: 44px;
+  --control-height-lg: 48px;
+
+  /* ---------- Elevation ---------- */
+  --shadow-xs: 0 1px 2px rgb(21 21 28 / 0.06);
+  --shadow-sm: 0 1px 2px rgb(21 21 28 / 0.05), 0 1px 3px rgb(21 21 28 / 0.04);
+  --shadow-card: 0 1px 2px rgb(21 21 28 / 0.04), 0 12px 32px -16px rgb(21 21 28 / 0.1);
+
+  /* ---------- Motion ---------- */
+  --duration-fast: 150ms;
+  --duration-base: 200ms;
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* ---------- Layout ---------- */
+  --auth-card-width: 440px;
+  --page-gutter: var(--space-4);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+
+    --color-bg: #0d0e12;
+    --color-bg-subtle: #16171d;
+    --color-bg-muted: #1d1e26;
+    --color-surface: #121318;
+    --color-border: #26272f;
+    --color-border-strong: #353642;
+    --color-divider: #1f2028;
+    --color-segment-thumb: #2a2b35;
+
+    --color-text: #ededf2;
+    --color-text-secondary: #a6a7b7;
+    --color-text-tertiary: #7b7c8e;
+    --color-text-disabled: #55566a;
+
+    --color-accent: #7c74f6;
+    --color-accent-hover: #8e87f8;
+    --color-accent-active: #a29cfa;
+    --color-accent-subtle: #1c1a3a;
+    --color-accent-subtle-hover: #24214a;
+    --color-accent-border: #3a3578;
+    --color-accent-text: #a29cfa;
+    --color-on-accent: #ffffff;
+    --color-focus-ring: rgb(124 116 246 / 0.55);
+
+    --color-danger: #f0776c;
+    --color-danger-subtle: #2a1513;
+    --color-danger-border: #4d2420;
+    --color-success: #4ccb7f;
+    --color-success-subtle: #10241a;
+    --color-success-border: #1f4a31;
+    --color-warning: #e9a94a;
+    --color-warning-subtle: #2a1f0e;
+    --color-warning-border: #4f3a17;
+
+    --shadow-xs: 0 1px 2px rgb(0 0 0 / 0.4);
+    --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.4), 0 1px 3px rgb(0 0 0 / 0.3);
+    --shadow-card: 0 1px 2px rgb(0 0 0 / 0.4), 0 16px 40px -20px rgb(0 0 0 / 0.6);
+  }
+}

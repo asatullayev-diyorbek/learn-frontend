@@ -1,0 +1,81 @@
+/* Segmented control with a sliding "thumb". */
+.list {
+  position: relative;
+  display: grid;
+  grid-auto-columns: 1fr;
+  grid-auto-flow: column;
+  padding: var(--space-1);
+  background: var(--color-bg-muted);
+  border-radius: var(--radius-md);
+  isolation: isolate;
+}
+
+.indicator {
+  position: absolute;
+  z-index: -1;
+  top: var(--space-1);
+  bottom: var(--space-1);
+  left: var(--space-1);
+  width: calc((100% - 2 * var(--space-1)) / var(--tab-count));
+  transform: translateX(calc(100% * var(--tab-index)));
+  background: var(--color-segment-thumb);
+  border-radius: calc(var(--radius-md) - 3px);
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--duration-base) var(--ease-out);
+}
+
+.tab {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-height: 40px;
+  padding: 0 var(--space-3);
+  border-radius: calc(var(--radius-md) - 3px);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--color-text-secondary);
+  white-space: nowrap;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    color var(--duration-fast) var(--ease-standard),
+    box-shadow var(--duration-fast) var(--ease-standard);
+}
+
+.tab:hover {
+  color: var(--color-text);
+}
+
+.tab[aria-selected="true"] {
+  color: var(--color-text);
+}
+
+.tab:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--color-accent);
+}
+
+.tabIcon {
+  display: inline-flex;
+  color: var(--color-text-tertiary);
+  transition: color var(--duration-fast) var(--ease-standard);
+}
+
+.tab[aria-selected="true"] .tabIcon {
+  color: var(--color-accent);
+}
+
+.panel {
+  border-radius: var(--radius-sm);
+}
+
+.panel:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 4px;
+}
+
+@media (max-width: 520px) {
+  .tab {
+    min-height: 44px;
+  }
+}

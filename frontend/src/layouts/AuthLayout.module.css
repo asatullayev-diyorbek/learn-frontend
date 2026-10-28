@@ -1,0 +1,76 @@
+.shell {
+  flex: 1;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  grid-template-columns: minmax(0, 1fr);
+  min-height: 100dvh;
+  padding: 0 var(--page-gutter);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  height: 72px;
+  max-width: 1120px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.main {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* optical centring: sit slightly above the true middle */
+  padding: var(--space-6) 0 calc(var(--space-16) + 4vh);
+}
+
+.card {
+  max-width: var(--auth-card-width);
+  /* a flex item defaults to min-width:auto — long unbreakable content (the
+     token) would otherwise widen the card past the viewport on mobile */
+  min-width: 0;
+}
+
+.intro {
+  margin-bottom: var(--space-8);
+}
+
+.title {
+  font-size: var(--text-2xl);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+  color: var(--color-text);
+}
+
+.description {
+  margin-top: var(--space-2);
+  font-size: var(--text-base);
+  line-height: var(--leading-normal);
+  color: var(--color-text-secondary);
+}
+
+@media (min-width: 521px) {
+  .shell {
+    padding: 0 var(--space-6);
+  }
+}
+
+@media (max-width: 520px) {
+  .header {
+    height: 64px;
+  }
+
+  .main {
+    align-items: flex-start;
+    padding: var(--space-4) 0 var(--space-10);
+  }
+
+  .intro {
+    margin-bottom: var(--space-6);
+  }
+
+  .title {
+    font-size: var(--text-xl);
+  }
+}

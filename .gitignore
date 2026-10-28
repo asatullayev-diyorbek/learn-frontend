@@ -2,10 +2,25 @@ node_modules/
 *.log
 .DS_Store
 
-# local test/screenshot scratch (Playwright smoke checks etc.)
+# Vite build output (incl. the e2e builds Playwright serves)
+dist/
+dist-e2e/
+dist-e2e-real/
+*.tsbuildinfo
+
+# Local env overrides (commit .env.example only)
+.env
+.env.local
+.env.*.local
+
+# Playwright artefacts
+playwright-report/
+test-results/
+blob-report/
+playwright/.cache/
+
+# local test/screenshot scratch
 /screenshots/
 *.png
 *.jpg
 *.jpeg
-playwright-report/
-test-results/

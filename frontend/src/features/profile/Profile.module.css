@@ -1,0 +1,135 @@
+/* Same page rhythm as the catalog and member home. */
+.page {
+  padding: var(--space-12) 0 var(--space-16);
+  animation: enter var(--duration-base) var(--ease-out);
+}
+
+/* ---------- who am I ---------- */
+.intro {
+  display: flex;
+  align-items: center;
+  gap: var(--space-5);
+  min-width: 0;
+}
+
+/* Initials only — the same treatment as the home feature icons, larger. */
+.avatar {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 64px;
+  height: 64px;
+  border-radius: var(--radius-full);
+  background: var(--color-accent-subtle);
+  color: var(--color-accent-text);
+  font-size: var(--text-xl);
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-snug);
+  line-height: 1;
+  user-select: none;
+}
+
+.identity {
+  min-width: 0;
+}
+
+.eyebrow {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-snug);
+  color: var(--color-accent-text);
+}
+
+.name {
+  margin-top: var(--space-1);
+  font-size: var(--text-2xl);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+  color: var(--color-text);
+  overflow-wrap: anywhere;
+}
+
+.meta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1-5);
+  min-width: 0;
+  margin-top: var(--space-1-5);
+  font-size: var(--text-base);
+  line-height: var(--leading-snug);
+  color: var(--color-text-secondary);
+}
+
+.metaIcon {
+  flex: none;
+  color: var(--color-telegram);
+}
+
+.metaText {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ---------- my courses ---------- */
+.section {
+  margin-top: var(--space-10);
+  padding-top: var(--space-8);
+  border-top: 1px solid var(--color-divider);
+}
+
+.sectionTitle {
+  font-size: var(--text-lg);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-snug);
+  color: var(--color-text);
+}
+
+.sectionBody {
+  margin-top: var(--space-4);
+}
+
+.emptyCard {
+  margin-top: var(--space-2);
+}
+
+/* ---------- loading ---------- */
+.avatarSkeleton {
+  flex: none;
+}
+
+.identitySkeleton {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--space-2);
+  min-width: 0;
+}
+
+@media (max-width: 520px) {
+  .page {
+    padding: var(--space-8) 0 var(--space-12);
+  }
+
+  .intro {
+    gap: var(--space-4);
+  }
+
+  .name {
+    font-size: var(--text-xl);
+  }
+
+  .section {
+    margin-top: var(--space-8);
+    padding-top: var(--space-6);
+  }
+}
+
+@keyframes enter {
+  from {
+    opacity: 0;
+  }
+}

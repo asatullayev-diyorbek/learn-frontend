@@ -9,6 +9,7 @@ import type {
   CourseLevel,
   CoursePage,
   EnrollResponse,
+  MyCourse,
   UnenrollResponse,
 } from "../../types/api";
 import { request } from "./client";
@@ -51,6 +52,15 @@ export function nextPageNumber(next: string | null): number | null {
   } catch {
     return null;
   }
+}
+
+/**
+ * GET /courses/mine/ — the signed-in user's courses, newest enrolment first.
+ * A plain array (no pagination envelope); [] means no enrolments. Without a
+ * session it is 401 {detail:"not_authenticated"}, surfaced as ApiError(401).
+ */
+export function getMyCourses(signal?: AbortSignal): Promise<MyCourse[]> {
+  return request<MyCourse[]>("/courses/mine/", { signal });
 }
 
 /** GET /courses/<slug>/ — 404 {detail:"not_found"} surfaces as ApiError(404). */

@@ -7,7 +7,7 @@ import { ROUTES } from "../router/paths";
 import styles from "./SiteLayout.module.css";
 
 /**
- * Shell for regular site pages (home, course catalog, course pages): header
+ * Shell for regular site pages (home, course catalog, course pages, profile): header
  * with brand + "Kurslar" nav + account slot, page content, minimal footer.
  *
  * It owns the CurrentUserProvider, so /me is fetched once per visit to the

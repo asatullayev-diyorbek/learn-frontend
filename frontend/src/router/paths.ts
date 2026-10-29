@@ -5,6 +5,7 @@ export const ROUTES = {
   /** Route pattern for the router; build links with ROUTES.courseDetail(slug). */
   courseDetailPattern: "/courses/:slug",
   courseDetail: (slug: string) => `/courses/${encodeURIComponent(slug)}`,
+  profile: "/profile",
 } as const;
 
 /** A link to /login that returns the visitor to `path` after signing in. */

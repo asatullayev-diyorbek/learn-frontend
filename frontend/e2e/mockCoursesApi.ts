@@ -1,7 +1,8 @@
 /*
  * Route-interception mocks for the courses contract (apps/courses), same
- * approach as mockApi.ts. Filtering, pagination, 404s and idempotent
- * enroll/unenroll are reproduced so specs exercise real request flows.
+ * approach as mockApi.ts. Filtering, pagination, 404s, idempotent
+ * enroll/unenroll and the signed-in user's /mine/ list are reproduced so
+ * specs exercise real request flows.
  */
 import type { Page, Request } from "@playwright/test";
 
@@ -25,6 +26,8 @@ export interface MockCourse {
   cover_image_url: string;
   enrolled_count: number;
   is_enrolled: boolean;
+  /** When the mocked user enrolled (ISO 8601); orders GET /courses/mine/. */
+  enrolled_at?: string;
 }
 
 export const CATEGORIES: MockCategory[] = [
@@ -109,6 +112,8 @@ export interface CoursesMockOptions {
   detailDelayMs?: number;
   enrollFailure?: (call: number, method: "POST" | "DELETE") => Failure;
   enrollDelayMs?: number;
+  mineFailure?: (call: number) => Failure;
+  mineDelayMs?: number;
 }
 
 export interface CoursesCalls {
@@ -117,6 +122,8 @@ export interface CoursesCalls {
   list: string[];
   detail: string[];
   enroll: { method: "POST" | "DELETE"; slug: string; csrfHeader: string | null }[];
+  /** GET /courses/mine/ requests. */
+  mine: number;
 }
 
 const json = (status: number, body: unknown) => ({
@@ -128,12 +135,16 @@ const json = (status: number, body: unknown) => ({
 
 export async function mockCoursesApi(page: Page, options: CoursesMockOptions = {}) {
   const courses = options.courses ?? makeCourses();
-  const calls: CoursesCalls = { categories: 0, list: [], detail: [], enroll: [] };
+  const calls: CoursesCalls = { categories: 0, list: [], detail: [], enroll: [], mine: 0 };
   const signedIn = () => options.signedIn ?? false;
   // Contract: is_enrolled is always false for a guest.
-  const asDetail = (c: MockCourse) => ({ ...c, is_enrolled: signedIn() && c.is_enrolled });
+  const asDetail = (c: MockCourse) => {
+    const item: Partial<MockCourse> = { ...c, is_enrolled: signedIn() && c.is_enrolled };
+    delete item.enrolled_at; // only /mine/ carries it
+    return item;
+  };
   const asListItem = (c: MockCourse) => {
-    const item: Partial<MockCourse> = asDetail(c);
+    const item = asDetail(c);
     delete item.description;
     return item;
   };
@@ -219,6 +230,24 @@ export async function mockCoursesApi(page: Page, options: CoursesMockOptions = {
         );
       }
 
+      // GET /api/courses/mine/ — unpaginated, newest enrolment first.
+      if (parts.length === 1 && parts[0] === "mine" && method === "GET") {
+        const call = calls.mine++;
+        if (options.mineDelayMs) await new Promise((r) => setTimeout(r, options.mineDelayMs));
+        const failure = options.mineFailure?.(call) ?? null;
+        if (failure !== null) return fail(failure);
+        if (!signedIn()) return route.fulfill(json(401, { detail: "not_authenticated" }));
+        const mine = courses
+          .filter((c) => c.is_enrolled)
+          .sort((a, b) => (b.enrolled_at ?? "").localeCompare(a.enrolled_at ?? ""));
+        return route.fulfill(
+          json(
+            200,
+            mine.map((c) => ({ ...asListItem(c), enrolled_at: c.enrolled_at ?? new Date(0).toISOString() })),
+          ),
+        );
+      }
+
       const slug = decodeURIComponent(parts[0] ?? "");
       const found = courses.find((c) => c.slug === slug);
 
@@ -248,6 +277,7 @@ export async function mockCoursesApi(page: Page, options: CoursesMockOptions = {
         if (found.is_enrolled !== enroll) {
           found.is_enrolled = enroll;
           found.enrolled_count += enroll ? 1 : -1;
+          found.enrolled_at = enroll ? new Date().toISOString() : undefined;
         }
         return route.fulfill(
           json(200, {

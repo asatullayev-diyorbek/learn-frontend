@@ -8,13 +8,33 @@
   min-width: 0;
 }
 
+/* A quiet link to /profile: reads as the greeting, behaves like a nav link. */
 .greeting {
+  position: relative;
+  display: block;
   min-width: 0;
+  padding: 0 var(--space-2);
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+  border-radius: var(--radius-md);
   font-size: var(--text-base);
+  line-height: var(--control-height-md);
   color: var(--color-text-secondary);
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    background-color var(--duration-fast) var(--ease-standard),
+    color var(--duration-fast) var(--ease-standard);
+}
+
+.greeting:hover,
+.greeting[aria-current="page"] {
+  background: var(--color-bg-subtle);
+}
+
+.greeting:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--color-focus-ring);
 }
 
 .name {

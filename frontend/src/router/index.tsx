@@ -4,6 +4,7 @@ import { CourseDetailPage } from "../pages/CourseDetailPage";
 import { CoursesPage } from "../pages/CoursesPage";
 import { HomePage } from "../pages/HomePage";
 import { LoginPage } from "../pages/LoginPage";
+import { ProfilePage } from "../pages/ProfilePage";
 import { ROUTES } from "./paths";
 
 export const router = createBrowserRouter([
@@ -16,6 +17,8 @@ export const router = createBrowserRouter([
       { path: ROUTES.home, element: <HomePage /> },
       { path: ROUTES.courses, element: <CoursesPage /> },
       { path: ROUTES.courseDetailPattern, element: <CourseDetailPage /> },
+      // Signed-in only; ProfilePage guards itself once /me has resolved.
+      { path: ROUTES.profile, element: <ProfilePage /> },
     ],
   },
   { path: "*", element: <Navigate to={ROUTES.home} replace /> },

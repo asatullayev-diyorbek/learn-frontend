@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import { NavLink } from "react-router-dom";
 import { Button, ButtonRouterLink } from "../../components/Button";
 import { Skeleton } from "../../components/Skeleton";
 import { ROUTES } from "../../router/paths";
@@ -50,10 +51,12 @@ export function AccountControls() {
 
       {session.status === "authenticated" && (
         <>
-          <p className={styles.greeting} data-testid="header-greeting">
+          {/* The greeting is the way into the profile (aria-current there). */}
+          <NavLink to={ROUTES.profile} className={styles.greeting} data-testid="header-greeting">
             <span className={styles.greetingPrefix}>{ACCOUNT_COPY.greeting} </span>
             <span className={styles.name}>{getDisplayName(session.user)}</span>
-          </p>
+            <span className="sr-only"> {ACCOUNT_COPY.profileHint}</span>
+          </NavLink>
           <Button
             variant="secondary"
             loading={session.signOutStatus === "pending"}

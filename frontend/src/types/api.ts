@@ -126,6 +126,12 @@ export interface CourseDetail extends CourseListItem {
   description: string;
 }
 
+/** GET /courses/mine/ → 200, one item (the list is unpaginated, newest enrolment first) */
+export interface MyCourse extends CourseListItem {
+  /** ISO 8601, UTC — when the signed-in user enrolled. */
+  enrolled_at: string;
+}
+
 /** GET /courses/ → 200, the paginated envelope */
 export interface CoursePage {
   count: number;

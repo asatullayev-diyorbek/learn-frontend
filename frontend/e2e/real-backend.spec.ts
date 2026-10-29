@@ -285,4 +285,43 @@ test.describe.serial("real backend", () => {
     await expect(page).toHaveURL(/\/courses\/python-asoslari$/, { timeout: 10_000 });
     await expect(page.getByRole("heading", { level: 1, name: "Python asoslari" })).toBeVisible();
   });
+
+  /* Profile — GET /api/courses/mine/. */
+
+  test("profile: guests are sent to sign-in with next=/profile", async ({ page }) => {
+    await page.goto("/profile");
+    await expect(page).toHaveURL(/\/login\?next=%2Fprofile$/, { timeout: 10_000 });
+  });
+
+  test("profile: empty for a new user, then lists a course enrolled via the real API", async ({ page }) => {
+    // A fresh Telegram id → a brand-new user with no enrolments.
+    const code = bot.createCode(tgId(9));
+    const signIn = await page.request.post("http://localhost:8000/api/accounts/telegram/code/verify/", {
+      data: { code },
+    });
+    expect(signIn.status()).toBe(200);
+
+    await page.goto("/profile");
+    await expect(page.getByRole("heading", { level: 1, name: "E2E" })).toBeVisible({ timeout: 10_000 });
+    await expect(page.getByTestId("profile-telegram")).toHaveText("@e2e_code");
+    await expect(page.getByTestId("my-courses-empty")).toBeVisible();
+
+    // Enrol from the course page, then reach the profile from the header greeting.
+    await page.goto("/courses/python-asoslari");
+    await page.getByRole("button", { name: "Kursga yozilish" }).click();
+    await expect(page.getByTestId("enrolled-status")).toContainText("Yozilgansiz");
+    await page.getByTestId("header-greeting").click();
+    await expect(page).toHaveURL(/\/profile$/);
+
+    const cards = page.getByTestId("my-courses").getByTestId("course-card");
+    await expect(cards).toHaveCount(1);
+    await expect(cards.first()).toHaveAttribute("data-slug", "python-asoslari");
+    await expect(cards.first().getByRole("heading", { level: 3, name: "Python asoslari" })).toBeVisible();
+    await expect(page.getByTestId("my-courses-count")).toHaveText("1 ta kurs");
+
+    // Clean up so the run leaves the course's count as it found it.
+    await cards.first().getByRole("link").click();
+    await page.getByRole("button", { name: "Kursdan chiqish" }).click();
+    await expect(page.getByRole("button", { name: "Kursga yozilish" })).toBeVisible();
+  });
 });

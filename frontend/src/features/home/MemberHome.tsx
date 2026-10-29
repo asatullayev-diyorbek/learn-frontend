@@ -11,8 +11,8 @@ import styles from "./Home.module.css";
 const COPY = HOME_COPY.member;
 
 /**
- * Home for a signed-in user. There is no "my courses" endpoint yet, so the
- * card is an invitation into the catalog rather than a list.
+ * Home for a signed-in user: an invitation into the catalog. Their enrolled
+ * courses live on /profile (same wording there when the list is empty).
  */
 export function MemberHome({ user }: { user: CurrentUser }) {
   return (

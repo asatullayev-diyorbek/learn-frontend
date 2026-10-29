@@ -10,7 +10,15 @@ import styles from "./CourseCard.module.css";
  * card, so the card is one click/tap target but is announced by its title
  * alone rather than as one long run-on link.
  */
-export function CourseCard({ course }: { course: CourseListItem }) {
+export function CourseCard({
+  course,
+  headingLevel = 2,
+}: {
+  course: CourseListItem;
+  /** 3 where the grid sits under its own h2 (the profile page's "Mening kurslarim"). */
+  headingLevel?: 2 | 3;
+}) {
+  const Heading = `h${headingLevel}` as const;
   return (
     <article className={styles.card} data-testid="course-card" data-slug={course.slug}>
       <div className={styles.media}>
@@ -28,11 +36,11 @@ export function CourseCard({ course }: { course: CourseListItem }) {
           <LevelBadge level={course.level} />
         </div>
 
-        <h2 className={styles.title}>
+        <Heading className={styles.title}>
           <Link to={ROUTES.courseDetail(course.slug)} className={styles.link} data-course-link>
             {course.title}
           </Link>
-        </h2>
+        </Heading>
 
         {course.summary && <p className={styles.summary}>{course.summary}</p>}
 

@@ -69,7 +69,7 @@ export function CoursesError({
 }: {
   error: RequestErrorKind;
   onRetry: () => void;
-  headingLevel?: 1 | 2;
+  headingLevel?: 1 | 2 | 3;
   testId?: string;
 }) {
   const copy = COURSES_ERROR_COPY[error];

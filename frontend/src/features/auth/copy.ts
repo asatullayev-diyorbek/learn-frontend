@@ -79,6 +79,8 @@ export const ACCOUNT_COPY = {
   signOut: "Chiqish",
   signingOut: "Chiqilmoqda…",
   greeting: "Salom,",
+  /** Screen-reader-only suffix on the greeting link: where it goes. */
+  profileHint: "(profil)",
   loading: "Hisob ma’lumotlari yuklanmoqda…",
   signedOut: "Tizimdan chiqdingiz.",
   signOutFailedTitle: "Tizimdan chiqib bo‘lmadi",

@@ -238,6 +238,10 @@ test.describe.serial("real backend", () => {
       "/login?next=%2Fcourses%2Fpython-asoslari",
     );
 
+    // Admin-seeded topics (apps/courses seed_courses) render from the real API.
+    await expect(page.getByRole("heading", { level: 2, name: "Mavzular" })).toBeVisible();
+    await expect(page.getByTestId("course-topics").locator("li").first()).toBeVisible();
+
     await page.goto("/courses/bunday-kurs-yoq");
     await expect(page.getByRole("heading", { level: 1, name: "Kurs topilmadi" })).toBeVisible();
   });

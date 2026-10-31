@@ -396,6 +396,13 @@ test.describe("course page", () => {
     await expect(paragraphs.first()).toHaveText("Bu kurs dasturlashni hech qachon o‘rganmaganlar uchun.");
     await expect(paragraphs.nth(1)).toContainText("Har bir mavzudan so‘ng topshiriq bor.");
 
+    await expect(page.getByRole("heading", { level: 2, name: "Mavzular" })).toBeVisible();
+    const topics = page.getByTestId("course-topics").locator("li");
+    await expect(topics).toHaveCount(3);
+    await expect(topics.nth(0)).toHaveText("O'zgaruvchilar va ma'lumot turlari");
+    await expect(topics.nth(1)).toHaveText("Shart operatorlari");
+    await expect(topics.nth(2)).toHaveText("Sikllar");
+
     await expect(page.getByRole("link", { name: "Barcha kurslar" })).toHaveAttribute("href", "/courses");
     expect(calls.detail).toEqual(["python-asoslari"]);
   });
@@ -407,6 +414,13 @@ test.describe("course page", () => {
     await expect(instructor).toContainText("Malika Karimova");
     await expect(instructor).toContainText("Senior frontend muhandis");
     await expect(instructor).toContainText("10 yildan ortiq tajriba.");
+  });
+
+  test("a course with no topics simply omits the 'Mavzular' section", async ({ page }) => {
+    await guest(page);
+    await page.goto("/courses/django-rest");
+    await expect(page.getByRole("heading", { level: 1, name: "Django REST API" })).toBeVisible();
+    await expect(page.getByTestId("course-topics")).toHaveCount(0);
   });
 
   test("shows a skeleton while loading", async ({ page }) => {

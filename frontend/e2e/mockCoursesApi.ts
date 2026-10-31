@@ -14,6 +14,12 @@ export interface MockCategory {
   slug: string;
 }
 
+export interface MockTopic {
+  id: number;
+  title: string;
+  order: number;
+}
+
 export interface MockCourse {
   id: number;
   slug: string;
@@ -28,6 +34,8 @@ export interface MockCourse {
   is_enrolled: boolean;
   /** When the mocked user enrolled (ISO 8601); orders GET /courses/mine/. */
   enrolled_at?: string;
+  /** Detail-only, same as the backend: list/mine cards never carry this. */
+  topics: MockTopic[];
 }
 
 export const CATEGORIES: MockCategory[] = [
@@ -68,6 +76,7 @@ function course(
     cover_image_url: "",
     enrolled_count: 10 + id,
     is_enrolled: false,
+    topics: [],
     ...extra,
   };
 }
@@ -81,6 +90,11 @@ export function makeCourses(): MockCourse[] {
         "Bu kurs dasturlashni hech qachon o‘rganmaganlar uchun.\n\nO‘zgaruvchilar, shartlar, sikllar va funksiyalarni amaliy misollarda o‘rganasiz.\nHar bir mavzudan so‘ng topshiriq bor.",
       cover_image_url: COVER_OK,
       enrolled_count: 12,
+      topics: [
+        { id: 1, title: "O'zgaruvchilar va ma'lumot turlari", order: 0 },
+        { id: 2, title: "Shart operatorlari", order: 1 },
+        { id: 3, title: "Sikllar", order: 2 },
+      ],
     }),
     course(2, "django-rest", "Django REST API", "intermediate", BACKEND),
     course(3, "postgresql-chuqur", "PostgreSQL chuqur", "advanced", BACKEND, { instructor: MALIKA }),
@@ -146,6 +160,7 @@ export async function mockCoursesApi(page: Page, options: CoursesMockOptions = {
   const asListItem = (c: MockCourse) => {
     const item = asDetail(c);
     delete item.description;
+    delete item.topics;
     return item;
   };
 

@@ -97,6 +97,21 @@ export function CourseDetailView({
           </div>
         </section>
       )}
+
+      {course.topics.length > 0 && (
+        <section className={styles.body} aria-labelledby="topics-heading" data-testid="course-topics">
+          <h2 id="topics-heading" className={styles.sectionTitle}>
+            {COURSE_DETAIL_COPY.topics}
+          </h2>
+          <ol className={styles.topicList}>
+            {course.topics.map((topic) => (
+              <li key={topic.id} className={styles.topicItem}>
+                {topic.title}
+              </li>
+            ))}
+          </ol>
+        </section>
+      )}
     </article>
   );
 }

@@ -57,6 +57,7 @@ export const COURSE_DETAIL_COPY = {
   loading: "Kurs yuklanmoqda…",
   back: "Barcha kurslar",
   about: "Kurs haqida",
+  topics: "Mavzular",
   instructor: "Muallif",
 
   notFoundTitle: "Kurs topilmadi",

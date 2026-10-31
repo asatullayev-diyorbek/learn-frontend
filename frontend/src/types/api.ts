@@ -121,9 +121,17 @@ export interface CourseListItem {
   is_enrolled: boolean;
 }
 
+export interface CourseTopic {
+  id: number;
+  title: string;
+  order: number;
+}
+
 /** GET /courses/<slug>/ → 200 (404 {detail:"not_found"}) */
 export interface CourseDetail extends CourseListItem {
   description: string;
+  /** Admin-authored, already in display order. May be empty. */
+  topics: CourseTopic[];
 }
 
 /** GET /courses/mine/ → 200, one item (the list is unpaginated, newest enrolment first) */

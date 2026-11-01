@@ -160,3 +160,54 @@ export interface UnenrollResponse {
   status: "not_enrolled";
   enrolled_count: number;
 }
+
+/* ---------------------------------------------------------------------------
+ * Video Submissions (Django, apps/submissions)
+ * ------------------------------------------------------------------------ */
+
+export type SubmissionStatus =
+  | "awaiting_topic"
+  | "pending_review"
+  | "approved"
+  | "rejected";
+
+export interface SubmissionCourse {
+  id: number;
+  title: string;
+  slug: string;
+}
+
+export interface SubmissionTopic {
+  id: number;
+  title: string;
+  order: number;
+  course: SubmissionCourse;
+}
+
+export interface VideoSubmission {
+  id: number;
+  student_id: number;
+  telegram_file_id: string;
+  topic: SubmissionTopic | null;
+  status: SubmissionStatus;
+  status_display: string;
+  youtube_video_id: string;
+  youtube_url: string;
+  rejection_reason: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface AvailableTopic {
+  id: number;
+  title: string;
+  order: number;
+}
+
+export interface AvailableCourseWithTopics {
+  id: number;
+  title: string;
+  slug: string;
+  topics: AvailableTopic[];
+}
+

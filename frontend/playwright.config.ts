@@ -39,7 +39,11 @@ export default defineConfig({
         ...devices["Desktop Chrome"],
         headless: true,
         launchOptions: {
-          executablePath: process.env.PLAYWRIGHT_CHROMIUM_PATH ?? "/opt/pw-browsers/chromium",
+          executablePath:
+            process.env.PLAYWRIGHT_CHROMIUM_PATH ??
+            (process.platform === "darwin"
+              ? "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+              : "/opt/pw-browsers/chromium"),
         },
       },
     },

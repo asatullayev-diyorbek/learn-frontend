@@ -1,52 +1,72 @@
 /*
  * Learn design tokens — the single source of truth for colour, spacing,
- * radius, typography, elevation and motion. Components consume these via
- * CSS Modules; future pages (home, courses, lesson, profile, studio) must
- * reuse them instead of introducing new raw values.
+ * radius, typography, elevation and motion.
+ * Refined for a modern, bright, professional online course platform.
  */
 
 :root {
   color-scheme: light;
 
-  /* ---------- Colour: neutrals ---------- */
-  --color-bg: #ffffff;
-  --color-bg-subtle: #f6f6f8;
-  --color-bg-muted: #efeff3;
+  /* ---------- Colour: Neutrals (Crisp White & Slate) ---------- */
+  --color-bg: #f8fafc;
+  --color-bg-subtle: #f1f5f9;
+  --color-bg-muted: #e2e8f0;
   --color-surface: #ffffff;
-  --color-border: #e7e7ec;
-  --color-border-strong: #d3d3dc;
-  --color-divider: #efeff3;
+  --color-surface-hover: #f8fafc;
+  --color-surface-elevated: #ffffff;
+  --color-border: #e2e8f0;
+  --color-border-strong: #cbd5e1;
+  --color-divider: #f1f5f9;
   --color-segment-thumb: #ffffff;
 
-  --color-text: #15151c;
-  --color-text-secondary: #565769;
-  --color-text-tertiary: #85869a;
-  --color-text-disabled: #a9aab8;
+  --color-text: #0f172a;
+  --color-text-secondary: #475569;
+  --color-text-tertiary: #64748b;
+  --color-text-disabled: #94a3b8;
 
-  /* ---------- Colour: accent (blue-violet) ---------- */
-  --color-accent: #5145e5;
-  --color-accent-hover: #4438d4;
-  --color-accent-active: #3a2fbd;
-  --color-accent-subtle: #f1f0fe;
-  --color-accent-subtle-hover: #e6e4fd;
-  --color-accent-border: #cfcbfa;
-  --color-accent-text: #4a3ed9;
+  /* ---------- Colour: Accent (Vibrant Royal / Electric Blue) ---------- */
+  --color-accent: #2563eb;
+  --color-accent-hover: #1d4ed8;
+  --color-accent-active: #1e40af;
+  --color-accent-subtle: #eff6ff;
+  --color-accent-subtle-hover: #dbeafe;
+  --color-accent-border: #bfdbfe;
+  --color-accent-text: #1d4ed8;
   --color-on-accent: #ffffff;
-  --color-focus-ring: rgb(81 69 229 / 0.42);
+  --color-focus-ring: rgb(37 99 235 / 0.35);
 
-  /* Third-party brand mark, used only on the Telegram glyph itself. */
+  /* Telegram brand */
   --color-telegram: #229ed9;
+  --color-telegram-hover: #1b8ec5;
+  --color-telegram-subtle: #e8f5fb;
 
-  /* ---------- Colour: status ---------- */
-  --color-danger: #c2352b;
-  --color-danger-subtle: #fdf2f1;
-  --color-danger-border: #f3cfcb;
-  --color-success: #15803d;
-  --color-success-subtle: #eef8f1;
-  --color-success-border: #c6e7d1;
-  --color-warning: #a35a00;
-  --color-warning-subtle: #fff6e9;
-  --color-warning-border: #f3dbb3;
+  /* ---------- Category accent colors (Course cards & badges) ---------- */
+  --color-cat-backend: #0284c7;
+  --color-cat-backend-subtle: #f0f9ff;
+  --color-cat-backend-border: #bae6fd;
+
+  --color-cat-frontend: #6366f1;
+  --color-cat-frontend-subtle: #eef2ff;
+  --color-cat-frontend-border: #c7d2fe;
+
+  --color-cat-database: #0d9488;
+  --color-cat-database-subtle: #f0fdfa;
+  --color-cat-database-border: #99f6e4;
+
+  --color-cat-mobile: #8b5cf6;
+  --color-cat-mobile-subtle: #f5f3ff;
+  --color-cat-mobile-border: #ddd6fe;
+
+  /* ---------- Colour: Status ---------- */
+  --color-danger: #dc2626;
+  --color-danger-subtle: #fef2f2;
+  --color-danger-border: #fecaca;
+  --color-success: #16a34a;
+  --color-success-subtle: #f0fdf4;
+  --color-success-border: #bbf7d0;
+  --color-warning: #d97706;
+  --color-warning-subtle: #fffbeb;
+  --color-warning-border: #fde68a;
 
   /* ---------- Spacing (4px grid) ---------- */
   --space-0-5: 2px;
@@ -61,107 +81,209 @@
   --space-10: 40px;
   --space-12: 48px;
   --space-16: 64px;
+  --space-20: 80px;
 
   /* ---------- Radius ---------- */
   --radius-xs: 6px;
   --radius-sm: 8px;
-  --radius-md: 10px;
-  --radius-lg: 14px;
-  --radius-xl: 18px;
-  --radius-full: 999px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-full: 9999px;
 
   /* ---------- Typography ---------- */
-  --font-sans: "Inter Variable", "Inter", ui-sans-serif, system-ui, -apple-system,
-    "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  --font-mono: ui-monospace, "SF Mono", "JetBrains Mono", "Cascadia Mono", Menlo,
-    Consolas, "Liberation Mono", monospace;
+  --font-sans: "Inter Variable", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", "Cascadia Code", "JetBrains Mono", monospace;
 
-  --text-xs: 0.75rem; /* 12px — meta, badges */
-  --text-sm: 0.8125rem; /* 13px — hints, captions */
-  --text-base: 0.9375rem; /* 15px — body, controls */
-  --text-md: 1rem; /* 16px — inputs on mobile (no iOS zoom) */
-  --text-lg: 1.125rem; /* 18px — state titles */
-  --text-xl: 1.375rem; /* 22px — page title (mobile) */
-  --text-2xl: 1.625rem; /* 26px — page title */
-  --text-3xl: 2.5rem; /* 40px — landing hero title (desktop only) */
+  --text-xs: 0.75rem;     /* 12px */
+  --text-sm: 0.875rem;    /* 14px */
+  --text-base: 0.9375rem; /* 15px */
+  --text-md: 1rem;        /* 16px */
+  --text-lg: 1.125rem;    /* 18px */
+  --text-xl: 1.25rem;     /* 20px */
+  --text-2xl: 1.5rem;     /* 24px */
+  --text-3xl: 2rem;       /* 32px */
+  --text-4xl: 2.75rem;    /* 44px */
 
-  --leading-tight: 1.25;
-  --leading-snug: 1.4;
-  --leading-normal: 1.55;
+  --leading-tight: 1.2;
+  --leading-snug: 1.35;
+  --leading-normal: 1.6;
 
   --weight-regular: 400;
   --weight-medium: 500;
   --weight-semibold: 600;
+  --weight-bold: 700;
 
-  --tracking-tight: -0.022em;
-  --tracking-snug: -0.011em;
-  --tracking-wide: 0.02em;
+  --tracking-tight: -0.025em;
+  --tracking-snug: -0.015em;
+  --tracking-normal: 0;
 
   /* ---------- Controls ---------- */
   --control-height-sm: 36px;
   --control-height-md: 44px;
-  --control-height-lg: 48px;
+  --control-height-lg: 50px;
 
-  /* ---------- Elevation ---------- */
-  --shadow-xs: 0 1px 2px rgb(21 21 28 / 0.06);
-  --shadow-sm: 0 1px 2px rgb(21 21 28 / 0.05), 0 1px 3px rgb(21 21 28 / 0.04);
-  --shadow-card: 0 1px 2px rgb(21 21 28 / 0.04), 0 12px 32px -16px rgb(21 21 28 / 0.1);
+  /* ---------- Elevation (Soft, modern shadows) ---------- */
+  --shadow-xs: 0 1px 2px rgba(15, 23, 42, 0.05);
+  --shadow-sm: 0 2px 4px rgba(15, 23, 42, 0.06), 0 1px 2px rgba(15, 23, 42, 0.04);
+  --shadow-md: 0 4px 12px -2px rgba(15, 23, 42, 0.08), 0 2px 6px -1px rgba(15, 23, 42, 0.04);
+  --shadow-card: 0 1px 3px rgba(15, 23, 42, 0.05), 0 10px 25px -5px rgba(15, 23, 42, 0.05);
+  --shadow-card-hover: 0 20px 35px -8px rgba(37, 99, 235, 0.12), 0 8px 16px -4px rgba(15, 23, 42, 0.06);
+  --shadow-glow: 0 0 40px -10px rgba(37, 99, 235, 0.25);
 
   /* ---------- Motion ---------- */
   --duration-fast: 150ms;
-  --duration-base: 200ms;
+  --duration-base: 220ms;
+  --duration-slow: 350ms;
   --ease-standard: cubic-bezier(0.2, 0, 0, 1);
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
 
   /* ---------- Layout ---------- */
   --auth-card-width: 440px;
   --page-gutter: var(--space-4);
-  /* Same content width and header heights as AuthLayout's brand header. */
-  --site-max-width: 1120px;
+  --site-max-width: 1200px;
   --site-header-height: 72px;
   --site-header-height-mobile: 64px;
 }
 
+/* =========================================================================
+ * Dark Mode (Deep Slate & Blue)
+ * Applied when data-theme="dark" on root, or when prefers-color-scheme: dark
+ * and data-theme is not explicitly set to light.
+ * ========================================================================= */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  --color-bg: #090d16;
+  --color-bg-subtle: #0f172a;
+  --color-bg-muted: #1e293b;
+  --color-surface: #0f172a;
+  --color-surface-hover: #1e293b;
+  --color-surface-elevated: #172033;
+  --color-border: #1e293b;
+  --color-border-strong: #334155;
+  --color-divider: #172033;
+  --color-segment-thumb: #1e293b;
+
+  --color-text: #f8fafc;
+  --color-text-secondary: #94a3b8;
+  --color-text-tertiary: #64748b;
+  --color-text-disabled: #475569;
+
+  --color-accent: #3b82f6;
+  --color-accent-hover: #60a5fa;
+  --color-accent-active: #93c5fd;
+  --color-accent-subtle: rgba(59, 130, 246, 0.12);
+  --color-accent-subtle-hover: rgba(59, 130, 246, 0.2);
+  --color-accent-border: rgba(59, 130, 246, 0.28);
+  --color-accent-text: #60a5fa;
+  --color-on-accent: #ffffff;
+  --color-focus-ring: rgb(59 130 246 / 0.45);
+
+  --color-telegram: #38bdf8;
+  --color-telegram-hover: #7dd3fc;
+  --color-telegram-subtle: rgba(56, 189, 248, 0.15);
+
+  --color-cat-backend: #38bdf8;
+  --color-cat-backend-subtle: rgba(56, 189, 248, 0.12);
+  --color-cat-backend-border: rgba(56, 189, 248, 0.3);
+
+  --color-cat-frontend: #818cf8;
+  --color-cat-frontend-subtle: rgba(129, 140, 248, 0.12);
+  --color-cat-frontend-border: rgba(129, 140, 248, 0.3);
+
+  --color-cat-database: #2dd4bf;
+  --color-cat-database-subtle: rgba(45, 212, 191, 0.12);
+  --color-cat-database-border: rgba(45, 212, 191, 0.3);
+
+  --color-cat-mobile: #a78bfa;
+  --color-cat-mobile-subtle: rgba(167, 139, 250, 0.12);
+  --color-cat-mobile-border: rgba(167, 139, 250, 0.3);
+
+  --color-danger: #f87171;
+  --color-danger-subtle: rgba(248, 113, 113, 0.12);
+  --color-danger-border: rgba(248, 113, 113, 0.3);
+  --color-success: #4ade80;
+  --color-success-subtle: rgba(74, 222, 128, 0.12);
+  --color-success-border: rgba(74, 222, 128, 0.3);
+  --color-warning: #fbbf24;
+  --color-warning-subtle: rgba(251, 191, 36, 0.12);
+  --color-warning-border: rgba(251, 191, 36, 0.3);
+
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.4), 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 12px -2px rgba(0, 0, 0, 0.5);
+  --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.4), 0 12px 28px -6px rgba(0, 0, 0, 0.5);
+  --shadow-card-hover: 0 20px 40px -10px rgba(0, 0, 0, 0.7), 0 0 30px -5px rgba(59, 130, 246, 0.2);
+  --shadow-glow: 0 0 50px -10px rgba(59, 130, 246, 0.25);
+}
+
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not([data-theme="light"]) {
     color-scheme: dark;
 
-    --color-bg: #0d0e12;
-    --color-bg-subtle: #16171d;
-    --color-bg-muted: #1d1e26;
-    --color-surface: #121318;
-    --color-border: #26272f;
-    --color-border-strong: #353642;
-    --color-divider: #1f2028;
-    --color-segment-thumb: #2a2b35;
+    --color-bg: #090d16;
+    --color-bg-subtle: #0f172a;
+    --color-bg-muted: #1e293b;
+    --color-surface: #0f172a;
+    --color-surface-hover: #1e293b;
+    --color-surface-elevated: #172033;
+    --color-border: #1e293b;
+    --color-border-strong: #334155;
+    --color-divider: #172033;
+    --color-segment-thumb: #1e293b;
 
-    --color-text: #ededf2;
-    --color-text-secondary: #a6a7b7;
-    --color-text-tertiary: #7b7c8e;
-    --color-text-disabled: #55566a;
+    --color-text: #f8fafc;
+    --color-text-secondary: #94a3b8;
+    --color-text-tertiary: #64748b;
+    --color-text-disabled: #475569;
 
-    --color-accent: #7c74f6;
-    --color-accent-hover: #8e87f8;
-    --color-accent-active: #a29cfa;
-    --color-accent-subtle: #1c1a3a;
-    --color-accent-subtle-hover: #24214a;
-    --color-accent-border: #3a3578;
-    --color-accent-text: #a29cfa;
+    --color-accent: #3b82f6;
+    --color-accent-hover: #60a5fa;
+    --color-accent-active: #93c5fd;
+    --color-accent-subtle: rgba(59, 130, 246, 0.12);
+    --color-accent-subtle-hover: rgba(59, 130, 246, 0.2);
+    --color-accent-border: rgba(59, 130, 246, 0.28);
+    --color-accent-text: #60a5fa;
     --color-on-accent: #ffffff;
-    --color-focus-ring: rgb(124 116 246 / 0.55);
+    --color-focus-ring: rgb(59 130 246 / 0.45);
 
-    --color-danger: #f0776c;
-    --color-danger-subtle: #2a1513;
-    --color-danger-border: #4d2420;
-    --color-success: #4ccb7f;
-    --color-success-subtle: #10241a;
-    --color-success-border: #1f4a31;
-    --color-warning: #e9a94a;
-    --color-warning-subtle: #2a1f0e;
-    --color-warning-border: #4f3a17;
+    --color-telegram: #38bdf8;
+    --color-telegram-hover: #7dd3fc;
+    --color-telegram-subtle: rgba(56, 189, 248, 0.15);
 
-    --shadow-xs: 0 1px 2px rgb(0 0 0 / 0.4);
-    --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.4), 0 1px 3px rgb(0 0 0 / 0.3);
-    --shadow-card: 0 1px 2px rgb(0 0 0 / 0.4), 0 16px 40px -20px rgb(0 0 0 / 0.6);
+    --color-cat-backend: #38bdf8;
+    --color-cat-backend-subtle: rgba(56, 189, 248, 0.12);
+    --color-cat-backend-border: rgba(56, 189, 248, 0.3);
+
+    --color-cat-frontend: #818cf8;
+    --color-cat-frontend-subtle: rgba(129, 140, 248, 0.12);
+    --color-cat-frontend-border: rgba(129, 140, 248, 0.3);
+
+    --color-cat-database: #2dd4bf;
+    --color-cat-database-subtle: rgba(45, 212, 191, 0.12);
+    --color-cat-database-border: rgba(45, 212, 191, 0.3);
+
+    --color-cat-mobile: #a78bfa;
+    --color-cat-mobile-subtle: rgba(167, 139, 250, 0.12);
+    --color-cat-mobile-border: rgba(167, 139, 250, 0.3);
+
+    --color-danger: #f87171;
+    --color-danger-subtle: rgba(248, 113, 113, 0.12);
+    --color-danger-border: rgba(248, 113, 113, 0.3);
+    --color-success: #4ade80;
+    --color-success-subtle: rgba(74, 222, 128, 0.12);
+    --color-success-border: rgba(74, 222, 128, 0.3);
+    --color-warning: #fbbf24;
+    --color-warning-subtle: rgba(251, 191, 36, 0.12);
+    --color-warning-border: rgba(251, 191, 36, 0.3);
+
+    --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.3);
+    --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.4), 0 1px 2px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 4px 12px -2px rgba(0, 0, 0, 0.5);
+    --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.4), 0 12px 28px -6px rgba(0, 0, 0, 0.5);
+    --shadow-card-hover: 0 20px 40px -10px rgba(0, 0, 0, 0.7), 0 0 30px -5px rgba(59, 130, 246, 0.2);
+    --shadow-glow: 0 0 50px -10px rgba(59, 130, 246, 0.25);
   }
 }

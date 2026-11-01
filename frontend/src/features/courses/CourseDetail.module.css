@@ -65,7 +65,7 @@
   gap: var(--space-4);
   align-self: start;
   position: sticky;
-  top: var(--space-6);
+  top: calc(var(--site-header-height) + var(--space-4));
   min-width: 0;
 }
 

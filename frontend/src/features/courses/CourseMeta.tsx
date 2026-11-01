@@ -3,10 +3,17 @@ import type { CourseLevel } from "../../types/api";
 import { COURSES_COPY, LEVEL_LABELS } from "./copy";
 import styles from "./CourseMeta.module.css";
 
-/** Small neutral pill: "Boshlang‘ich" / "O‘rta" / "Yuqori". */
+const LEVEL_STYLES: Partial<Record<CourseLevel, string>> = {
+  beginner: styles.levelBeginner,
+  intermediate: styles.levelIntermediate,
+  advanced: styles.levelAdvanced,
+};
+
+/** Colored pill: "Boshlang‘ich" / "O‘rta" / "Yuqori". */
 export function LevelBadge({ level }: { level: CourseLevel }) {
+  const levelClass = LEVEL_STYLES[level] || "";
   return (
-    <span className={styles.badge} data-testid="course-level">
+    <span className={[styles.badge, levelClass].join(" ")} data-testid="course-level">
       {LEVEL_LABELS[level] ?? level}
     </span>
   );
@@ -29,7 +36,7 @@ export function EnrolledCount({ count, className }: { count: number; className?:
       className={[styles.count, className].filter(Boolean).join(" ")}
       data-testid="course-enrolled-count"
     >
-      <UsersIcon size={16} className={styles.countIcon} />
+      <UsersIcon size={15} className={styles.countIcon} />
       {COURSES_COPY.students(count)}
     </span>
   );

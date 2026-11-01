@@ -1,19 +1,13 @@
 import { Link, NavLink, Outlet, ScrollRestoration } from "react-router-dom";
 import { BrandMark } from "../components/BrandMark";
+import { ThemeToggle } from "../components/ThemeToggle";
+import { TelegramIcon, BookIcon, VideoIcon } from "../components/icons";
 import { AccountControls } from "../features/auth/AccountControls";
 import { CurrentUserProvider } from "../features/auth/CurrentUserProvider";
 import { SignOutFeedback } from "../features/auth/SignOutFeedback";
 import { ROUTES } from "../router/paths";
 import styles from "./SiteLayout.module.css";
 
-/**
- * Shell for regular site pages (home, course catalog, course pages, profile): header
- * with brand + "Kurslar" nav + account slot, page content, minimal footer.
- *
- * It owns the CurrentUserProvider, so /me is fetched once per visit to the
- * site section — and afresh after coming back from /login, which uses the
- * focused AuthLayout instead and never needs to know who is signed in.
- */
 export function SiteLayout() {
   return (
     <CurrentUserProvider>
@@ -26,11 +20,19 @@ export function SiteLayout() {
               </Link>
               <nav aria-label="Asosiy" className={styles.nav}>
                 <NavLink to={ROUTES.courses} className={styles.navLink}>
-                  Kurslar
+                  <BookIcon size={16} />
+                  <span>Kurslar</span>
+                </NavLink>
+                <NavLink to={ROUTES.videos} className={`${styles.navLink} ${styles.navExtra}`} tabIndex={-1}>
+                  <VideoIcon size={16} />
+                  <span>Videolar</span>
                 </NavLink>
               </nav>
             </div>
-            <AccountControls />
+            <div className={styles.end}>
+              <ThemeToggle />
+              <AccountControls />
+            </div>
           </div>
         </header>
 
@@ -40,13 +42,47 @@ export function SiteLayout() {
         </main>
 
         <footer className={styles.footer}>
-          <div className={styles.bar}>
-            <p>© {new Date().getFullYear()} Learn</p>
-            <p>Onlayn ta’lim platformasi</p>
+          <div className={styles.footerContent}>
+            <div className={styles.footerMain}>
+              <div className={styles.brandCol}>
+                <BrandMark />
+                <p className={styles.brandDesc}>
+                  O'zbek tilidagi zamonaviy dasturlash kurslari. Noldan boshlab professional darajagacha amaliy bilimlar.
+                </p>
+                <div className={styles.telegramBadge}>
+                  <TelegramIcon size={16} />
+                  <span>Telegram bilan 100% himoyalangan parolsiz kirish</span>
+                </div>
+              </div>
+
+              <div className={styles.footerCol}>
+                <h4 className={styles.colTitle}>Katalog</h4>
+                <ul className={styles.colList}>
+                  <li><Link to={`${ROUTES.courses}?category=backend`}>Backend dasturlash</Link></li>
+                  <li><Link to={`${ROUTES.courses}?category=frontend`}>Frontend dasturlash</Link></li>
+                  <li><Link to={`${ROUTES.courses}?category=malumotlar-bazalari`}>Ma'lumotlar bazalari</Link></li>
+                  <li><Link to={`${ROUTES.courses}?category=mobil-dasturlash`}>Mobil dasturlash</Link></li>
+                </ul>
+              </div>
+
+              <div className={styles.footerCol}>
+                <h4 className={styles.colTitle}>Platforma</h4>
+                <ul className={styles.colList}>
+                  <li><Link to={ROUTES.home}>Bosh sahifa</Link></li>
+                  <li><Link to={ROUTES.courses}>Kurslar katalogi</Link></li>
+                  <li><Link to={ROUTES.videos}>Mening videolarim</Link></li>
+                  <li><Link to={ROUTES.profile}>Mening profilim</Link></li>
+                </ul>
+              </div>
+            </div>
+
+            <div className={styles.footerBottom}>
+              <p>© {new Date().getFullYear()} Learn Platformasi. Barcha huquqlar himoyalangan.</p>
+              <p className={styles.footerNote}>Amaliy dasturlash maktabi</p>
+            </div>
           </div>
         </footer>
       </div>
-      {/* New page → top of the page; back/forward → where you were. */}
       <ScrollRestoration />
     </CurrentUserProvider>
   );

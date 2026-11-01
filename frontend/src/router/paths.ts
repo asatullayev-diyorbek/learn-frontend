@@ -6,6 +6,7 @@ export const ROUTES = {
   courseDetailPattern: "/courses/:slug",
   courseDetail: (slug: string) => `/courses/${encodeURIComponent(slug)}`,
   profile: "/profile",
+  videos: "/videos",
 } as const;
 
 /** A link to /login that returns the visitor to `path` after signing in. */

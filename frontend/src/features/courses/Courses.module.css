@@ -132,9 +132,11 @@
 }
 
 .chip:has(.chipInput:checked) {
-  border-color: var(--color-accent-border);
+  border-color: var(--color-accent);
   background: var(--color-accent-subtle);
-  color: var(--color-accent-text);
+  color: var(--color-accent);
+  font-weight: var(--weight-semibold);
+  box-shadow: 0 1px 4px rgba(37, 99, 235, 0.15);
 }
 
 .chip:has(.chipInput:focus-visible) {

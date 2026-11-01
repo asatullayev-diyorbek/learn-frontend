@@ -3,16 +3,48 @@
   align-items: center;
   gap: var(--space-2);
   color: var(--color-text);
+  text-decoration: none;
+}
+
+.markWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  filter: drop-shadow(0 2px 8px rgba(37, 99, 235, 0.25));
+  transition: transform var(--duration-fast) var(--ease-spring);
+}
+
+.brand:hover .markWrapper {
+  transform: scale(1.05);
 }
 
 .mark {
-  width: 28px;
-  height: 28px;
-  color: var(--color-accent);
+  width: 32px;
+  height: 32px;
+}
+
+.textGroup {
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
 .wordmark {
-  font-size: 1.0625rem;
-  font-weight: var(--weight-semibold);
+  font-size: 1.25rem;
+  font-weight: var(--weight-bold);
   letter-spacing: var(--tracking-tight);
+  color: var(--color-text);
+  line-height: 1;
+}
+
+.badge {
+  font-size: 0.625rem;
+  font-weight: var(--weight-bold);
+  letter-spacing: 0.05em;
+  padding: 2px 6px;
+  border-radius: var(--radius-xs);
+  background: var(--color-accent-subtle);
+  color: var(--color-accent-text);
+  border: 1px solid var(--color-accent-border);
+  line-height: 1;
 }

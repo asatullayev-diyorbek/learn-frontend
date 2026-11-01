@@ -1,6 +1,7 @@
 node_modules/
 *.log
 .DS_Store
+.vite/
 
 # Vite build output (incl. the e2e builds Playwright serves)
 dist/

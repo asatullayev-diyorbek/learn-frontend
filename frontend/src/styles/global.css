@@ -13,11 +13,12 @@
 html {
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
+  scroll-behavior: smooth;
 }
 
 body {
   min-height: 100dvh;
-  background: var(--color-bg);
+  background-color: var(--color-bg);
   color: var(--color-text);
   font-family: var(--font-sans);
   font-size: var(--text-base);
@@ -26,6 +27,8 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
+  transition: background-color var(--duration-base) var(--ease-standard),
+              color var(--duration-base) var(--ease-standard);
 }
 
 #root {
@@ -59,11 +62,19 @@ button {
 a {
   color: var(--color-accent-text);
   text-decoration: none;
+  transition: color var(--duration-fast) var(--ease-standard);
+}
+
+a:hover {
+  color: var(--color-accent-hover);
 }
 
 h1,
 h2,
 h3,
+h4,
+h5,
+h6,
 p {
   overflow-wrap: break-word;
 }
@@ -74,7 +85,8 @@ kbd {
 }
 
 ::selection {
-  background: var(--color-accent-subtle-hover);
+  background: var(--color-accent-subtle);
+  color: var(--color-accent-text);
 }
 
 /* One consistent focus treatment for every interactive element. */
@@ -104,12 +116,24 @@ kbd {
   border: 0;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
+/* Custom modern scrollbar */
+@supports (scrollbar-color: auto) {
+  * {
+    scrollbar-color: var(--color-border-strong) transparent;
+    scrollbar-width: thin;
+  }
+}
+
+@supports not (scrollbar-color: auto) {
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-border-strong);
+    border-radius: var(--radius-full);
   }
 }

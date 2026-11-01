@@ -8,8 +8,45 @@
 .intro {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: var(--space-5);
   min-width: 0;
+  flex-wrap: wrap;
+}
+
+.introLeft {
+  display: flex;
+  align-items: center;
+  gap: var(--space-5);
+  min-width: 0;
+}
+
+.profileActions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.videosLink {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2-5) var(--space-4);
+  background: var(--color-accent-subtle);
+  color: var(--color-accent-text);
+  border: 1px solid var(--color-accent-border);
+  border-radius: var(--radius-xl);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  text-decoration: none;
+  transition: all var(--duration-fast);
+}
+
+.videosLink:hover {
+  background: var(--color-accent);
+  color: #ffffff;
+  border-color: var(--color-accent);
+  transform: translateY(-1px);
 }
 
 /* Initials only — the same treatment as the home feature icons, larger. */
@@ -17,16 +54,17 @@
   display: grid;
   flex: none;
   place-items: center;
-  width: 64px;
-  height: 64px;
+  width: 72px;
+  height: 72px;
   border-radius: var(--radius-full);
-  background: var(--color-accent-subtle);
-  color: var(--color-accent-text);
-  font-size: var(--text-xl);
-  font-weight: var(--weight-semibold);
+  background: linear-gradient(135deg, var(--color-accent) 0%, #0284c7 100%);
+  color: #ffffff;
+  font-size: var(--text-2xl);
+  font-weight: var(--weight-bold);
   letter-spacing: var(--tracking-snug);
   line-height: 1;
   user-select: none;
+  box-shadow: 0 4px 16px rgba(37, 99, 235, 0.25);
 }
 
 .identity {

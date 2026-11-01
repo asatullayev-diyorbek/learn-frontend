@@ -213,6 +213,7 @@
 }
 
 .topicItem {
+  position: relative;
   display: flex;
   align-items: center;
   gap: var(--space-3);
@@ -234,6 +235,28 @@
   border-color: var(--color-accent-border);
   background: var(--color-surface);
   transform: translateX(3px);
+}
+
+.topicLink {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex: 1;
+  min-width: 0;
+  color: inherit;
+  text-decoration: none;
+}
+
+.topicLink::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+}
+
+.topicTitleText {
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 
 .topicItem::before {

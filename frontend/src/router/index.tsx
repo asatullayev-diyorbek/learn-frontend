@@ -3,6 +3,7 @@ import { SiteLayout } from "../layouts/SiteLayout";
 import { CourseDetailPage } from "../pages/CourseDetailPage";
 import { CoursesPage } from "../pages/CoursesPage";
 import { HomePage } from "../pages/HomePage";
+import { LessonDetailPage } from "../pages/LessonDetailPage";
 import { LoginPage } from "../pages/LoginPage";
 import { MyVideosPage } from "../pages/MyVideosPage";
 import { ProfilePage } from "../pages/ProfilePage";
@@ -18,6 +19,7 @@ export const router = createBrowserRouter([
       { path: ROUTES.home, element: <HomePage /> },
       { path: ROUTES.courses, element: <CoursesPage /> },
       { path: ROUTES.courseDetailPattern, element: <CourseDetailPage /> },
+      { path: ROUTES.lessonDetailPattern, element: <LessonDetailPage /> },
       // Signed-in only; ProfilePage guards itself once /me has resolved.
       { path: ROUTES.profile, element: <ProfilePage /> },
       { path: ROUTES.videos, element: <MyVideosPage /> },

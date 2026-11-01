@@ -114,7 +114,13 @@ export function CourseDetailView({
             <ol className={styles.topicList}>
               {course.topics.map((topic) => (
                 <li key={topic.id} className={styles.topicItem}>
-                  {topic.title}
+                  <Link
+                    to={ROUTES.lessonDetail(course.slug, topic.id)}
+                    className={styles.topicLink}
+                    data-testid="course-topic-link"
+                  >
+                    <span className={styles.topicTitleText}>{topic.title}</span>
+                  </Link>
                 </li>
               ))}
             </ol>

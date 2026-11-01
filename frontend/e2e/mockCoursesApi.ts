@@ -302,6 +302,57 @@ export async function mockCoursesApi(page: Page, options: CoursesMockOptions = {
         );
       }
 
+      // GET /api/courses/<slug>/topics/<topicId>/
+      if (parts.length === 3 && parts[1] === "topics" && method === "GET") {
+        if (!found) return route.fulfill(json(404, { detail: "not_found" }));
+        const topicId = Number(parts[2]);
+        const topicIdx = found.topics.findIndex((t) => t.id === topicId);
+        if (topicIdx < 0) return route.fulfill(json(404, { detail: "not_found" }));
+        const topic = found.topics[topicIdx]!;
+        const prev = topicIdx > 0 ? found.topics[topicIdx - 1]!.id : null;
+        const next = topicIdx + 1 < found.topics.length ? found.topics[topicIdx + 1]!.id : null;
+
+        return route.fulfill(
+          json(200, {
+            id: topic.id,
+            title: topic.title,
+            order: topic.order,
+            course: {
+              id: found.id,
+              slug: found.slug,
+              title: found.title,
+              summary: found.summary,
+              level: found.level,
+              category: found.category,
+              instructor: found.instructor,
+              is_enrolled: signedIn() && found.is_enrolled,
+            },
+            topics: found.topics.map((t) => ({ ...t, video_count: t.id === 1 ? 1 : 0 })),
+            videos:
+              topic.id === 1
+                ? [
+                    {
+                      id: 501,
+                      youtube_video_id: "dQw4w9WgXcQ",
+                      youtube_url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+                      embed_url: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+                      author: {
+                        id: 10,
+                        username: "ali_student",
+                        first_name: "Ali",
+                        last_name: "Valiyev",
+                        telegram_username: "ali_dev",
+                      },
+                      created_at: "2026-11-01T10:00:00Z",
+                    },
+                  ]
+                : [],
+            previous_topic_id: prev,
+            next_topic_id: next,
+          }),
+        );
+      }
+
       return route.fulfill(json(404, { detail: "not_found" }));
     },
   );

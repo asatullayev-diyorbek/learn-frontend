@@ -127,6 +127,50 @@ export interface CourseTopic {
   order: number;
 }
 
+export interface TopicNavItem extends CourseTopic {
+  video_count: number;
+}
+
+export interface LessonVideoAuthor {
+  id: number;
+  username: string;
+  first_name: string;
+  last_name: string;
+  telegram_username: string;
+}
+
+export interface LessonVideo {
+  id: number;
+  youtube_video_id: string;
+  youtube_url: string;
+  embed_url: string;
+  author: LessonVideoAuthor;
+  created_at: string;
+}
+
+export interface LessonCourseBrief {
+  id: number;
+  slug: string;
+  title: string;
+  summary: string;
+  level: CourseLevel;
+  category: CourseCategory;
+  instructor: CourseInstructor;
+  is_enrolled: boolean;
+}
+
+/** GET /courses/<slug>/topics/<topic_id>/ → 200 */
+export interface TopicDetail {
+  id: number;
+  title: string;
+  order: number;
+  course: LessonCourseBrief;
+  topics: TopicNavItem[];
+  videos: LessonVideo[];
+  previous_topic_id: number | null;
+  next_topic_id: number | null;
+}
+
 /** GET /courses/<slug>/ → 200 (404 {detail:"not_found"}) */
 export interface CourseDetail extends CourseListItem {
   description: string;

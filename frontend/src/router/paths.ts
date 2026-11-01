@@ -5,6 +5,10 @@ export const ROUTES = {
   /** Route pattern for the router; build links with ROUTES.courseDetail(slug). */
   courseDetailPattern: "/courses/:slug",
   courseDetail: (slug: string) => `/courses/${encodeURIComponent(slug)}`,
+  /** Lesson / Topic detail page inside a course. */
+  lessonDetailPattern: "/courses/:slug/topics/:topicId",
+  lessonDetail: (slug: string, topicId: number | string) =>
+    `/courses/${encodeURIComponent(slug)}/topics/${encodeURIComponent(String(topicId))}`,
   profile: "/profile",
   videos: "/videos",
 } as const;

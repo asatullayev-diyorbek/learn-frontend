@@ -10,6 +10,7 @@ import type {
   CoursePage,
   EnrollResponse,
   MyCourse,
+  TopicDetail,
   UnenrollResponse,
 } from "../../types/api";
 import { request } from "./client";
@@ -66,6 +67,18 @@ export function getMyCourses(signal?: AbortSignal): Promise<MyCourse[]> {
 /** GET /courses/<slug>/ — 404 {detail:"not_found"} surfaces as ApiError(404). */
 export function getCourse(slug: string, signal?: AbortSignal): Promise<CourseDetail> {
   return request<CourseDetail>(`/courses/${encodeURIComponent(slug)}/`, { signal });
+}
+
+/** GET /courses/<slug>/topics/<topicId>/ — 404 {detail:"not_found"} surfaces as ApiError(404). */
+export function getTopicDetail(
+  slug: string,
+  topicId: number | string,
+  signal?: AbortSignal,
+): Promise<TopicDetail> {
+  return request<TopicDetail>(
+    `/courses/${encodeURIComponent(slug)}/topics/${encodeURIComponent(String(topicId))}/`,
+    { signal },
+  );
 }
 
 /**

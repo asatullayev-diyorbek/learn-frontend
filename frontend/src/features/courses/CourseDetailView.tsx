@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { ArrowLeftIcon } from "../../components/icons";
+import { ArrowLeftIcon, PlayIcon, TelegramIcon, VideoIcon } from "../../components/icons";
 import { ROUTES } from "../../router/paths";
 import type { CourseDetail, CourseInstructor } from "../../types/api";
 import { CourseCover } from "./CourseCover";
@@ -85,33 +85,72 @@ export function CourseDetailView({
         <InstructorCard instructor={course.instructor} />
       </aside>
 
-      {description.length > 0 && (
-        <section className={styles.body} aria-labelledby="about-heading">
-          <h2 id="about-heading" className={styles.sectionTitle}>
-            {COURSE_DETAIL_COPY.about}
-          </h2>
-          <div className={styles.description} data-testid="course-description">
-            {description.map((text, i) => (
-              <p key={i}>{text}</p>
-            ))}
-          </div>
-        </section>
-      )}
+      <div className={styles.body}>
+        {description.length > 0 && (
+          <section className={styles.contentSection} aria-labelledby="about-heading">
+            <h2 id="about-heading" className={styles.sectionTitle}>
+              {COURSE_DETAIL_COPY.about}
+            </h2>
+            <div className={styles.description} data-testid="course-description">
+              {description.map((text, i) => (
+                <p key={i}>{text}</p>
+              ))}
+            </div>
+          </section>
+        )}
 
-      {course.topics.length > 0 && (
-        <section className={styles.body} aria-labelledby="topics-heading" data-testid="course-topics">
-          <h2 id="topics-heading" className={styles.sectionTitle}>
-            {COURSE_DETAIL_COPY.topics}
-          </h2>
-          <ol className={styles.topicList}>
-            {course.topics.map((topic) => (
-              <li key={topic.id} className={styles.topicItem}>
-                {topic.title}
-              </li>
-            ))}
-          </ol>
-        </section>
-      )}
+        {course.topics.length > 0 && (
+          <section className={styles.contentSection} aria-labelledby="topics-heading" data-testid="course-topics">
+            <div className={styles.topicsHeader}>
+              <h2 id="topics-heading" className={styles.sectionTitle}>
+                {COURSE_DETAIL_COPY.topics}
+              </h2>
+              <span className={styles.topicsCountBadge}>
+                <PlayIcon size={12} />
+                {course.topics.length} ta dars mavzusi
+              </span>
+            </div>
+
+            <ol className={styles.topicList}>
+              {course.topics.map((topic) => (
+                <li key={topic.id} className={styles.topicItem}>
+                  {topic.title}
+                </li>
+              ))}
+            </ol>
+
+            <div className={styles.contributeCallout}>
+              <div className={styles.contributeText}>
+                <span className={styles.contributeIcon}>
+                  <VideoIcon size={18} />
+                </span>
+                <div>
+                  <strong>Ushbu mavzulardan biriga video darslik tayyorladingizmi?</strong>
+                  <p>
+                    Videongizni Telegram botga yuboring va «Mening videolarim» sahifasida shu kurs mavzusiga biriktiring.
+                  </p>
+                </div>
+              </div>
+              <div className={styles.contributeActions}>
+                <Link to={ROUTES.videos} className={styles.contributeLink} tabIndex={-1}>
+                  <VideoIcon size={15} />
+                  <span>Mavzuga video biriktirish</span>
+                </Link>
+                <a
+                  href="https://t.me/learn_asatullayev_bot"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={styles.contributeBotLink}
+                  tabIndex={-1}
+                >
+                  <TelegramIcon size={15} />
+                  <span>Botga yuborish</span>
+                </a>
+              </div>
+            </div>
+          </section>
+        )}
+      </div>
     </article>
   );
 }

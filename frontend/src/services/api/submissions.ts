@@ -37,3 +37,4 @@ export async function getAvailableTopics(
 ): Promise<AvailableCourseWithTopics[]> {
   return request<AvailableCourseWithTopics[]>("/submissions/available-topics/", { signal });
 }
+

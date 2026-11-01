@@ -92,7 +92,12 @@ test.describe("My Videos Page (/videos)", () => {
     await mockAuthApi(page, { user: E2E_USER });
 
     let currentStatus = "awaiting_topic";
-    let boundTopic: any = null;
+    let boundTopic: {
+      id: number;
+      title: string;
+      order: number;
+      course: { id: number; title: string; slug: string };
+    } | null = null;
 
     await page.route("**/api/submissions/mine/", async (route) => {
       await route.fulfill({
@@ -177,3 +182,4 @@ test.describe("My Videos Page (/videos)", () => {
     await expect(page.getByText("1-dars: Modellar va ORM")).toBeVisible();
   });
 });
+

@@ -74,9 +74,15 @@ h2,
 h3,
 h4,
 h5,
-h6,
-p {
+h6 {
   overflow-wrap: break-word;
+  text-wrap: balance;
+}
+
+p,
+li {
+  overflow-wrap: break-word;
+  text-wrap: pretty;
 }
 
 code,

@@ -20,9 +20,9 @@
   gap: var(--space-6);
   background: linear-gradient(135deg, var(--color-surface) 0%, var(--color-accent-subtle) 100%);
   border: 1px solid var(--color-border);
-  border-radius: var(--radius-2xl);
+  border-radius: var(--radius-xl);
   padding: var(--space-8);
-  box-shadow: 0 4px 20px rgba(37, 99, 235, 0.06);
+  box-shadow: var(--shadow-card);
   flex-wrap: wrap;
 }
 
@@ -159,7 +159,7 @@
 .emptyCard {
   background: var(--color-surface);
   border: 1px dashed var(--color-border-strong);
-  border-radius: var(--radius-2xl);
+  border-radius: var(--radius-xl);
   padding: var(--space-12) var(--space-6);
   text-align: center;
   display: flex;
@@ -168,6 +168,7 @@
   gap: var(--space-4);
   max-width: 540px;
   margin: var(--space-4) auto;
+  box-shadow: var(--shadow-xs);
 }
 
 .emptyIcon {
@@ -226,12 +227,13 @@
 
 .errorBanner {
   padding: var(--space-4);
-  background: #fef2f2;
-  border: 1px solid #fecaca;
+  background: var(--color-danger-subtle);
+  border: 1px solid var(--color-danger-border);
   border-radius: var(--radius-xl);
-  color: #b91c1c;
+  color: var(--color-danger);
   font-size: var(--text-sm);
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
+
